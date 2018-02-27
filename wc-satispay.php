@@ -36,14 +36,10 @@ class WC_Satispay extends WC_Payment_Gateway {
     \SatispayOnline\Api::setStaging($this->staging == 'yes');
 
     \SatispayOnline\Api::setPluginName('WooCommerce');
-    \SatispayOnline\Api::setPluginVersion('1.3.0');
+    \SatispayOnline\Api::setPluginVersion('1.3.3');
     \SatispayOnline\Api::setPlatformVersion(WC_VERSION);
     \SatispayOnline\Api::setType('ECOMMERCE-PLUGIN');
   }
-
-  // public function admin_options() {
-  //   parent::admin_options();
-  // }
 
   public function process_refund($order, $amount = null, $reason = '') {
     $order = new WC_Order($order);
