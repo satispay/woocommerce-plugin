@@ -3,7 +3,7 @@ Contributors: satispay
 Tags: woocommerce, satispay, payment method
 Requires at least: 4.6
 Tested up to: 4.9.4
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 

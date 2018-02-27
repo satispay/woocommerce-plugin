@@ -5,7 +5,7 @@
  * Description: Satispay is a new payment system that allows you to pay stores or friends from your smartphone.
  * Author: Satispay
  * Author URI: http://satispay.com/
- * Version: 1.3.0
+ * Version: 1.3.4
  * Text Domain: woo-satispay
  * Domain Path: /languages
  */
