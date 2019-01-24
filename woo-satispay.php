@@ -4,17 +4,13 @@
  * Plugin URI: https://wordpress.org/plugins/woo-satispay/
  * Description: Satispay is a new payment system that allows you to pay stores or friends from your smartphone.
  * Author: Satispay
- * Author URI: http://satispay.com/
- * Version: 1.3.4
- * Text Domain: woo-satispay
- * Domain Path: /languages
+ * Author URI: https://www.satispay.com/
+ * Version: 1.3.5
  */
 
 add_action('plugins_loaded', 'wc_satispay_init', 0);
 function wc_satispay_init() {
 	if (!class_exists('WC_Payment_Gateway')) return;
-
-	load_plugin_textdomain('woo-satispay', false, basename(dirname(__FILE__)).'/languages/');
 
 	include_once('wc-satispay.php');
 

@@ -2,8 +2,8 @@
 Contributors: satispay
 Tags: woocommerce, satispay, payment method
 Requires at least: 4.6
-Tested up to: 4.9.4
-Stable tag: 1.3.4
+Tested up to: 5.0
+Stable tag: 1.3.5
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -39,6 +39,9 @@ As soon as the customer confirms the payment, the transaction is completed, thus
 https://www.satispay.com/en/how-to-pay-online
 
 == Changelog ==
+
+= 1.3.5 =
+* Tested on WordPress 5.0
 
 = 1.3.1 =
 * Updated Satispay SDK
