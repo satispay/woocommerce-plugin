@@ -5,7 +5,7 @@
  * Description: Satispay is a new payment system that allows you to pay stores or friends from your smartphone.
  * Author: Satispay
  * Author URI: https://www.satispay.com/
- * Version: 1.3.5
+ * Version: 1.4.0
  */
 
 add_action('plugins_loaded', 'wc_satispay_init', 0);
@@ -23,9 +23,9 @@ function wc_satispay_init() {
 
 	add_filter('plugin_action_links_'.plugin_basename( __FILE__ ), 'wc_satispay_action_links');
 	function wc_satispay_action_links($links) {
-		$plugin_links = array(
+		$pluginLinks = array(
 			'<a href="'.admin_url('admin.php?page=wc-settings&tab=checkout&section=satispay').'">'.__('Settings', 'woo-satispay').'</a>'
 		);
-		return array_merge($plugin_links, $links);
+		return array_merge($pluginLinks, $links);
 	}
 }
