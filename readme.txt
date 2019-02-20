@@ -41,6 +41,7 @@ https://www.satispay.com/en/how-to-pay-online
 == Changelog ==
 
 = 1.4.0 =
+* New payment UI with QR Code
 
 = 1.3.5 =
 * Tested on WordPress 5.0
