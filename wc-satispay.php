@@ -24,8 +24,8 @@ class WC_Satispay extends WC_Payment_Gateway {
     $this->init_form_fields();
     $this->init_settings();
 
-    add_action('woocommerce_update_options_payment_gateways_satispay', array($this, 'process_admin_options'));
-    add_action('woocommerce_api_wc_gateway_satispay', array($this, 'gateway_api'));
+    add_action('woocommerce_update_options_payment_gateways_'.$this->id, array($this, 'process_admin_options'));
+    add_action('woocommerce_api_wc_gateway_'.$this->id, array($this, 'gateway_api'));
 
     $authenticationType = $this->get_authentication_type();
     if ($authenticationType == 'signature') {
@@ -127,8 +127,6 @@ class WC_Satispay extends WC_Payment_Gateway {
     $newActivationCode = $postData['woocommerce_satispay_activationCode'];
     $newSandbox = $postData['woocommerce_satispay_sandbox'];
 
-    parent::process_admin_options();
-
     if ($newActivationCode != $activationCode) {
       if ($newSandbox == '1') {
         \SatispayGBusiness\Api::setSandbox(true);
@@ -137,16 +135,20 @@ class WC_Satispay extends WC_Payment_Gateway {
       try {
         $authentication = \SatispayGBusiness\Api::authenticateWithToken($newActivationCode);
 
-        $this->update_option('keyId', $authentication->keyId);
-        $this->update_option('privateKey', $authentication->privateKey);
-        $this->update_option('publicKey', $authentication->publicKey);
-        $this->update_option('activationCode', $newActivationCode);
+        $postData['woocommerce_satispay_keyId'] = $authentication->keyId;
+        $postData['woocommerce_satispay_privateKey'] = $authentication->privateKey;
+        $postData['woocommerce_satispay_publicKey'] = $authentication->publicKey;
+        $postData['woocommerce_satispay_activationCode'] = $newActivationCode;
       } catch(\Exception $ex) {
         $this->add_error(sprintf(__('The Activation Code "%s" is invalid', 'woo-satispay'), $newActivationCode));
         $this->display_errors();
-        $this->update_option('activationCode', $activationCode);
+        $postData['woocommerce_satispay_activationCode'] = $activationCode;
       }
     }
+
+    $this->set_post_data($postData);
+
+    return parent::process_admin_options();
   }
 
   function admin_options() {
@@ -163,12 +165,7 @@ class WC_Satispay extends WC_Payment_Gateway {
       echo '<p>'.__('Sandbox is Enabled, remember to disable it after tests', 'woo-satispay').'</p>';
       echo '</div>';
     }
-
-    // echo '<p>';
-    // print_r($this->settings);
-    // echo '</p>';
-
-    $this->display_errors();
+    
     return parent::admin_options();
   }
 
