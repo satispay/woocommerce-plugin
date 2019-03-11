@@ -5,7 +5,7 @@
  * Description: Satispay is a new payment system that allows you to pay stores or friends from your smartphone.
  * Author: Satispay
  * Author URI: https://www.satispay.com/
- * Version: 1.4.1
+ * Version: 1.4.2
  */
 
 add_action('plugins_loaded', 'wc_satispay_init', 0);

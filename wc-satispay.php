@@ -27,6 +27,10 @@ class WC_Satispay extends WC_Payment_Gateway {
     add_action('woocommerce_update_options_payment_gateways_'.$this->id, array($this, 'process_admin_options'));
     add_action('woocommerce_api_wc_gateway_'.$this->id, array($this, 'gateway_api'));
 
+    if ($this->get_option('sandbox') == 'yes') {
+      \SatispayGBusiness\Api::setSandbox(true);
+    }
+
     $authenticationType = $this->get_authentication_type();
     if ($authenticationType == 'signature') {
       \SatispayGBusiness\Api::setPublicKey($this->get_option('publicKey'));
@@ -34,10 +38,6 @@ class WC_Satispay extends WC_Payment_Gateway {
       \SatispayGBusiness\Api::setKeyId($this->get_option('keyId'));
     } else if ($authenticationType == 'bearer') {
       \SatispayGBusiness\Api::setSecurityBearer($this->get_option('securityBearer'));
-    }
-
-    if ($this->get_option('sandbox') == 'yes') {
-      \SatispayGBusiness\Api::setSandbox(true);
     }
   }
 
@@ -127,7 +127,7 @@ class WC_Satispay extends WC_Payment_Gateway {
     $newActivationCode = $postData['woocommerce_satispay_activationCode'];
     $newSandbox = $postData['woocommerce_satispay_sandbox'];
 
-    if ($newActivationCode != $activationCode) {
+    if (!empty($newActivationCode) && $newActivationCode != $activationCode) {
       if ($newSandbox == '1') {
         \SatispayGBusiness\Api::setSandbox(true);
       }
@@ -135,24 +135,34 @@ class WC_Satispay extends WC_Payment_Gateway {
       try {
         $authentication = \SatispayGBusiness\Api::authenticateWithToken($newActivationCode);
 
-        $postData['woocommerce_satispay_keyId'] = $authentication->keyId;
-        $postData['woocommerce_satispay_privateKey'] = $authentication->privateKey;
-        $postData['woocommerce_satispay_publicKey'] = $authentication->publicKey;
-        $postData['woocommerce_satispay_activationCode'] = $newActivationCode;
+        $this->update_option('keyId', $authentication->keyId);
+        $this->update_option('privateKey', $authentication->privateKey);
+        $this->update_option('publicKey', $authentication->publicKey);
+        $this->update_option('activationCode', $newActivationCode);
+        $this->update_option('securityBearer', '');
       } catch(\Exception $ex) {
         $this->add_error(sprintf(__('The Activation Code "%s" is invalid', 'woo-satispay'), $newActivationCode));
         $this->display_errors();
-        $postData['woocommerce_satispay_activationCode'] = $activationCode;
       }
+    } else if (empty($newActivationCode)) {
+      $this->update_option('keyId', '');
+      $this->update_option('privateKey', '');
+      $this->update_option('publicKey', '');
+      $this->update_option('activationCode', '');
+      $this->update_option('securityBearer', '');
     }
-
-    $this->set_post_data($postData);
 
     return parent::process_admin_options();
   }
 
   function admin_options() {
     $authenticationType = $this->get_authentication_type();
+
+    if ($authenticationType == 'none') {
+      echo '<div class="notice-error notice">';
+      echo '<p>'.__('Satispay is not configured', 'woo-satispay').'</p>';
+      echo '</div>';
+    }
     
     if ($authenticationType == 'bearer') {
       echo '<div class="notice-error notice">';
