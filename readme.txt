@@ -2,12 +2,12 @@
 Contributors: satispay
 Tags: woocommerce, satispay, payment method
 Requires at least: 4.6
-Tested up to: 5.1
-Stable tag: 1.4.2
+Tested up to: 5.2
+Stable tag: 1.4.3
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Satispay is a new payment system that allows you to pay stores or friends from your smartphone.
+With Satispay you can send money to friends and pay in stores from your phone. Free, simple, secure! #doitsmart
 
 == Description ==
 

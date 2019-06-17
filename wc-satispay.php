@@ -3,14 +3,14 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
-require_once(dirname(__FILE__).'/includes/gbusiness-api-php-sdk/init.php');
+require_once(dirname(__FILE__).'/satispay-sdk/init.php');
 
 class WC_Satispay extends WC_Payment_Gateway {
   public function __construct() {
     $this->id                   = 'satispay';
     $this->method_title         = __('Satispay', 'woo-satispay');
-    $this->order_button_text    = __('Proceed to Satispay', 'woo-satispay');
-    $this->method_description   = __('Satispay is a secure payment system that allows you to pay in physical and online stores, buy phone top-ups and even transfer money with friends for free.', 'woo-satispay');
+    $this->order_button_text    = __('Pay with Satispay', 'woo-satispay');
+    $this->method_description   = __('With Satispay you can send money to friends and pay in stores from your phone. Free, simple, secure! #doitsmart', 'woo-satispay');
     $this->has_fields           = false;
     $this->supports             = array(
       'products',
@@ -19,7 +19,7 @@ class WC_Satispay extends WC_Payment_Gateway {
 
     $this->title                = $this->method_title;
     $this->description          = $this->method_description;
-    $this->icon                 = plugins_url('/images/logo.png', __FILE__);
+    $this->icon                 = plugins_url('/logo.png', __FILE__);
 
     $this->init_form_fields();
     $this->init_settings();
@@ -31,14 +31,9 @@ class WC_Satispay extends WC_Payment_Gateway {
       \SatispayGBusiness\Api::setSandbox(true);
     }
 
-    $authenticationType = $this->get_authentication_type();
-    if ($authenticationType == 'signature') {
-      \SatispayGBusiness\Api::setPublicKey($this->get_option('publicKey'));
-      \SatispayGBusiness\Api::setPrivateKey($this->get_option('privateKey'));
-      \SatispayGBusiness\Api::setKeyId($this->get_option('keyId'));
-    } else if ($authenticationType == 'bearer') {
-      \SatispayGBusiness\Api::setSecurityBearer($this->get_option('securityBearer'));
-    }
+    \SatispayGBusiness\Api::setPublicKey($this->get_option('publicKey'));
+    \SatispayGBusiness\Api::setPrivateKey($this->get_option('privateKey'));
+    \SatispayGBusiness\Api::setKeyId($this->get_option('keyId'));
   }
 
   public function process_refund($order, $amount = null, $reason = '') {
@@ -65,29 +60,29 @@ class WC_Satispay extends WC_Payment_Gateway {
       'activationCode' => array(
         'title' => __('Activation Code', 'woo-satispay'),
         'type' => 'text',
-        'description' => sprintf(__('Get a six characters Activation Code from <a href="%s" target="_blank">Dashboard</a>.', 'woo-satispay'), 'https://business.satispay.com')
+        'description' => sprintf(__('Get a six characters Activation Code from Online Shop section on <a href="%s" target="_blank">Satispay Dashboard</a>.', 'woo-satispay'), 'https://business.satispay.com')
       ),
       
-      'advanced' => array(
-        'title' => __( 'Advanced Options', 'woo-satispay' ),
-        'type' => 'title',
-        'description' => '',
-      ),
+      // 'advanced' => array(
+      //   'title' => __( 'Advanced Options', 'woo-satispay' ),
+      //   'type' => 'title',
+      //   'description' => '',
+      // ),
 
       'sandbox' => array(
         'title' => __('Sandbox', 'woo-satispay'),
-        'label' => __('Enable Sandbox', 'woo-satispay'),
+        'label' => __('Sandbox Mode', 'woo-satispay'),
         'type' => 'checkbox',
         'default' => 'no',
-        'description' => sprintf(__('Sandbox can be used to test payments. Request a <a href="%s" target="_blank">Sandbox Account</a>.', 'woo-satispay'), 'https://developers.satispay.com/docs/sandbox-account')
+        'description' => sprintf(__('Sandbox Mode can be used to test payments. Request a <a href="%s" target="_blank">Sandbox Account</a>.', 'woo-satispay'), 'https://developers.satispay.com/docs/sandbox-account')
       ),
-      'debug' => array(
-        'title' => __('Debug Logs', 'woo-satispay'),
-        'label' => __('Enable Logs', 'woo-satispay'),
-        'type' => 'checkbox',
-        'default' => 'no',
-        'description' => sprintf(__('Log Satispay requests inside %s.<br />Note: this may log personal informations. We recommend using this for debugging purposes only and deleting the logs when finished.', 'woo-satispay'), '<code>'.WC_Log_Handler_File::get_log_file_path('satispay').'</code>')
-      )
+      // 'debug' => array(
+      //   'title' => __('Debug Logs', 'woo-satispay'),
+      //   'label' => __('Enable Logs', 'woo-satispay'),
+      //   'type' => 'checkbox',
+      //   'default' => 'no',
+      //   'description' => sprintf(__('Log Satispay requests inside %s.<br />Note: this may log personal informations. We recommend using this for debugging purposes only and deleting the logs when finished.', 'woo-satispay'), '<code>'.WC_Log_Handler_File::get_log_file_path('satispay').'</code>')
+      // )
     );
   }
 
@@ -100,6 +95,10 @@ class WC_Satispay extends WC_Payment_Gateway {
         if ($payment->status === 'ACCEPTED') {
           header('Location: '.$this->get_return_url($order));
         } else {
+          \SatispayGBusiness\Payment::update($payment->id, array(
+            'action' => 'CANCEL'
+          ));
+
           header('Location: '.$order->get_cancel_order_url_raw());
         }
         break;
@@ -139,66 +138,39 @@ class WC_Satispay extends WC_Payment_Gateway {
         $this->update_option('privateKey', $authentication->privateKey);
         $this->update_option('publicKey', $authentication->publicKey);
         $this->update_option('activationCode', $newActivationCode);
-        $this->update_option('securityBearer', '');
+
+        \SatispayGBusiness\Api::setKeyId($authentication->keyId);
+        \SatispayGBusiness\Api::setPrivateKey($authentication->privateKey);
+        \SatispayGBusiness\Api::setPublicKey($authentication->publicKey);
       } catch(\Exception $ex) {
-        $this->add_error(sprintf(__('The Activation Code "%s" is invalid', 'woo-satispay'), $newActivationCode));
-        $this->display_errors();
+        echo '<div class="notice-error notice">';
+        echo '<p>'.sprintf(__('The Activation Code "%s" is invalid', 'woo-satispay'), $newActivationCode).'</p>';
+        echo '</div>';
       }
     } else if (empty($newActivationCode)) {
       $this->update_option('keyId', '');
       $this->update_option('privateKey', '');
       $this->update_option('publicKey', '');
       $this->update_option('activationCode', '');
-      $this->update_option('securityBearer', '');
     }
 
     return parent::process_admin_options();
   }
 
-  function admin_options() {
-    $authenticationType = $this->get_authentication_type();
-
-    if ($authenticationType == 'none') {
+  public function admin_options() {
+    try {
+      \SatispayGBusiness\Payment::all();
+    } catch (\Exception $ex) {
       echo '<div class="notice-error notice">';
-      echo '<p>'.__('Satispay is not configured', 'woo-satispay').'</p>';
-      echo '</div>';
-    }
-    
-    if ($authenticationType == 'bearer') {
-      echo '<div class="notice-error notice">';
-      echo '<p>'.__('You are using an old authentication method, please reconfigure Satispay with an Activation Code', 'woo-satispay').'</p>';
-      echo '</div>';
-    }
-
-    if ($this->get_option('sandbox') == 'yes') {
-      echo '<div class="notice-warning notice">';
-      echo '<p>'.__('Sandbox is Enabled, remember to disable it after tests', 'woo-satispay').'</p>';
+      echo '<p>'.sprintf(__('Satispay is not correctly configured, get an Activation Code from Online Shop section on <a href="%s" target="_blank">Satispay Dashboard</a>', 'woo-satispay'), 'https://business.satispay.com').'</p>';
       echo '</div>';
     }
     
     return parent::admin_options();
   }
 
-  function is_sandbox_enabled() {
-    $sandbox = $this->get_option('sandbox');
-    if (!empty($sandbox) && $sandbox == 'yes') {
-      return true;
-    }
-    return false;
-  }
-
-  function get_authentication_type() {
-    if (!empty($this->get_option('keyId')) && !empty($this->get_option('privateKey')) && !empty($this->get_option('publicKey'))) {
-      return 'signature';
-    } else if (!empty($this->get_option('securityBearer'))) {
-      return 'bearer';
-    } else {
-      return 'none';
-    }
-  }
-
   public function is_available() {
-    if (!$this->enabled || $this->get_authentication_type() == 'none') {
+    if (!$this->enabled) {
       return false;
     }
     return true;
@@ -218,7 +190,7 @@ class WC_Satispay extends WC_Payment_Gateway {
 
     $payment = \SatispayGBusiness\Payment::create(array(
       'flow' => 'MATCH_CODE',
-      'amount_unit' => round($order->get_total() * 100),
+      'amount_unit' => $order->get_total() * 100,
       'currency' => (method_exists($order, 'get_currency')) ? $order->get_currency() : $order->order_currency,
       'callback_url' => $callbackUrl,
       'metadata' => array(

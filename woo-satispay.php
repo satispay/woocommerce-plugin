@@ -2,10 +2,10 @@
 /*
  * Plugin Name: WooCommerce Satispay
  * Plugin URI: https://wordpress.org/plugins/woo-satispay/
- * Description: Satispay is a new payment system that allows you to pay stores or friends from your smartphone.
+ * Description: With Satispay you can send money to friends and pay in stores from your phone. Free, simple, secure! #doitsmart
  * Author: Satispay
  * Author URI: https://www.satispay.com/
- * Version: 1.4.2
+ * Version: 1.4.3
  */
 
 add_action('plugins_loaded', 'wc_satispay_init', 0);
