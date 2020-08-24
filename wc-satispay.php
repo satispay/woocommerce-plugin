@@ -193,6 +193,7 @@ class WC_Satispay extends WC_Payment_Gateway {
       'amount_unit' => $order->get_total() * 100,
       'currency' => (method_exists($order, 'get_currency')) ? $order->get_currency() : $order->order_currency,
       'callback_url' => $callbackUrl,
+      'external_code' => $order->get_id(),
       'metadata' => array(
         'order_id' => $order->get_id(),
         'redirect_url' => $redirectUrl
