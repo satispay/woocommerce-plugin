@@ -37,6 +37,9 @@ As soon as the customer confirms the payment, the transaction is completed, thus
 
 == Changelog ==
 
+= Unreleased =
+* Added external-code in MATCH_CODE requests
+
 = 1.4.0 =
 * New payment UI with QR Code
 
