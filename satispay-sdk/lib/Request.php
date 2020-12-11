@@ -149,7 +149,6 @@ class Request {
     if (!empty($options["body"])) {
       array_push($headers, "Content-Type: application/json");
       $body = json_encode($options["body"]);
-      array_push($headers, "Content-Length: ".strlen($body));
     }
 
     $sign = false;
