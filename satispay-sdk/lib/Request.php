@@ -222,6 +222,12 @@ class Request {
       $curlOptions[CURLOPT_SSL_VERIFYPEER] = false;
     }
 
+    if (!empty("WP_PROXY_HOST")) $curlOptions[CURLOPT_PROXY] = WP_PROXY_HOST;
+    if (!empty("WP_PROXY_PORT")) $curlOptions[CURLOPT_PROXYPORT] = WP_PROXY_PORT;
+    if (!empty("WP_PROXY_USERNAME") && !empty("WP_PROXY_PASSWORD")) {
+      $curlOptions[CURLOPT_PROXYUSERPWD] = WP_PROXY_USERNAME . ":" . WP_PROXY_PASSWORD;
+    }
+
     $curlOptions[CURLOPT_HTTPHEADER] = $options["headers"];
     curl_setopt_array($curl, $curlOptions);
 
