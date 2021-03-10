@@ -10,7 +10,7 @@ class WC_Satispay extends WC_Payment_Gateway {
     $this->id                   = 'satispay';
     $this->method_title         = __('Satispay', 'woo-satispay');
     $this->order_button_text    = __('Pay with Satispay', 'woo-satispay');
-    $this->method_description   = __('With Satispay you can send money to friends and pay in stores from your phone. Free, simple, secure! #doitsmart', 'woo-satispay');
+    $this->method_description   = __('Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart', 'woo-satispay');
     $this->has_fields           = false;
     $this->supports             = array(
       'products',

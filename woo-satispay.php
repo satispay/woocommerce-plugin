@@ -2,12 +2,12 @@
 /*
  * Plugin Name: WooCommerce Satispay
  * Plugin URI: https://wordpress.org/plugins/woo-satispay/
- * Description: With Satispay you can send money to friends and pay in stores from your phone. Free, simple, secure! #doitsmart
+ * Description: Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart
  * Author: Satispay
  * Author URI: https://www.satispay.com/
- * Version: 1.5.1
+ * Version: 1.5.2
  * WC requires at least: 3.4.0
- * WC tested up to: 4.9.0
+ * WC tested up to: 5.0
  */
 
 add_action('plugins_loaded', 'wc_satispay_init', 0);
