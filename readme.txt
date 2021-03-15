@@ -18,8 +18,8 @@ The plugin allows you to accept digital payments from Satispay users in a really
 In order to activate the service, you must complete the signup for Satispay Business at https://business.satispay.com/signup. Joining is free as there are no activation costs, monthly fees or deactivation charges.
 
 The only fee is a commission of:
-- **0.5%** on payments less than or equal to 10€
-- **0.5% + 0.20€** for payments greater than 10€
+- **1%** on payments less than or equal to 10€
+- **1% + 0.20€** for payments greater than 10€
 
 For more information, visit our pricing page at https://www.satispay.com/en/pricing.
 
