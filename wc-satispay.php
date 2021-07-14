@@ -18,8 +18,9 @@ class WC_Satispay extends WC_Payment_Gateway {
     );
 
     $this->title                = $this->method_title;
-    $this->description          = $this->method_description;
+    $this->description          = $this->get_option('description');
     $this->icon                 = plugins_url('/logo.png', __FILE__);
+    $this->enabled              = $this->get_option( 'enabled' );
 
     $this->init_form_fields();
     $this->init_settings();
@@ -62,7 +63,12 @@ class WC_Satispay extends WC_Payment_Gateway {
         'type' => 'text',
         'description' => sprintf(__('Get a six characters Activation Code from Online Shop section on <a href="%s" target="_blank">Satispay Dashboard</a>.', 'woo-satispay'), 'https://business.satispay.com')
       ),
-      
+      'description' => array(
+        'title' => __('Description', 'woo-satispay'),
+        'type' => 'text',
+        'description' => __('Enter the description you want to show to customers in your checkout page.', 'woo-satispay') // TODO: add translation
+      ),
+
       // 'advanced' => array(
       //   'title' => __( 'Advanced Options', 'woo-satispay' ),
       //   'type' => 'title',
@@ -165,12 +171,12 @@ class WC_Satispay extends WC_Payment_Gateway {
       echo '<p>'.sprintf(__('Satispay is not correctly configured, get an Activation Code from Online Shop section on <a href="%s" target="_blank">Satispay Dashboard</a>', 'woo-satispay'), 'https://business.satispay.com').'</p>';
       echo '</div>';
     }
-    
+
     return parent::admin_options();
   }
 
   public function is_available() {
-    if (!$this->enabled) {
+    if ( 'no' === $this->enabled ) {
       return false;
     }
     return true;
