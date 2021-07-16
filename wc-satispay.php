@@ -201,7 +201,7 @@ class WC_Satispay extends WC_Payment_Gateway {
       'callback_url' => $callbackUrl,
       'external_code' => $order->get_id(),
       'metadata' => array(
-        'order_id' => $order->get_id(),
+        'order_id' => apply_filters ( 'satispay_payment_metadata_order_id', $order->get_id(), $order ),
         'redirect_url' => $redirectUrl
       )
     ));
