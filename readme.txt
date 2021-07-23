@@ -37,6 +37,9 @@ As soon as the customer confirms the payment, the transaction is completed, thus
 
 == Changelog ==
 
+= Unreleased =
+* Added new cron schedule to finalize unhandled payments
+
 = 1.5.2 =
 * Support to latest versions of WordPress and WooCommerce
 
