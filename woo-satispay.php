@@ -5,9 +5,9 @@
  * Description: Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart
  * Author: Satispay
  * Author URI: https://www.satispay.com/
- * Version: 1.5.2
+ * Version: 2.0.0
  * WC requires at least: 3.4.0
- * WC tested up to: 5.1.0
+ * WC tested up to: 6.0
  */
 add_action('plugins_loaded', 'wc_satispay_init', 0);
 add_filter('cron_schedules', 'wc_satispay_cron_schedule');

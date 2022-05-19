@@ -2,8 +2,8 @@
 Contributors: satispay
 Tags: woocommerce, satispay, payment method
 Requires at least: 4.6
-Tested up to: 5.7
-Stable tag: 1.5.2
+Tested up to: 6.0
+Stable tag: 2.0.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -37,8 +37,8 @@ As soon as the customer confirms the payment, the transaction is completed, thus
 
 == Changelog ==
 
-= Unreleased =
-* Added new cron schedule to finalize unhandled payments (All payment timing calculations are made using the UTC time zone)
+= 2.0.0 =
+* Added cron to finalize unhandled payments
 
 = 1.5.2 =
 * Support to latest versions of WordPress and WooCommerce

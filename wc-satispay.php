@@ -10,7 +10,7 @@ class WC_Satispay extends WC_Payment_Gateway {
     $this->id                   = 'satispay';
     $this->method_title         = __('Satispay', 'woo-satispay');
     $this->order_button_text    = __('Pay with Satispay', 'woo-satispay');
-    $this->method_description   = __('Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart', 'woo-satispay');
+    $this->method_description   = __('Do it smart. Choose Satispay and pay with a tap!', 'woo-satispay');
     $this->has_fields           = false;
     $this->supports             = array(
       'products',
@@ -118,18 +118,18 @@ class WC_Satispay extends WC_Payment_Gateway {
         'description' => sprintf(__('Sandbox Mode can be used to test payments. Request a <a href="%s" target="_blank">Sandbox Account</a>.', 'woo-satispay'), 'https://developers.satispay.com/docs/sandbox-account')
       ),
       'finalizeUnhandledTransactions' => array(
-        'title' => __('Finalize Unhandled Transactions', 'woo-satispay'),
-        'label' => __('Finalize Unhandled Transactions', 'woo-satispay'),
+        'title' => __('Finalize unhandled payments', 'woo-satispay'),
+        'label' => __('Enable cron', 'woo-satispay'),
         'type' => 'checkbox',
         'default' => 'no',
         'description' => sprintf(__('Finalize unhandled Satispay payments with a cron.', 'woo-satispay'))
       ),
       'finalizeMaxHours' => array(
-        'title' => __('Finalize Max Hours', 'woo-satispay'),
-        'label' => __('Finalize Max Hours', 'woo-satispay'),
+        'title' => __('Finalize pending payments up to', 'woo-satispay'),
+        'label' => __('Finalize pending payments up to', 'woo-satispay'),
         'type' => 'integer',
         'default' => 4,
-        'description' => sprintf(__('Max time used to choose unhandled Satispay payments to finalize, the default is 4 hours for the oldest payments.', 'woo-satispay'))
+        'description' => sprintf(__('Choose a number of hours, default is four and minimum is two.', 'woo-satispay'))
       )
       // 'debug' => array(
       //   'title' => __('Debug Logs', 'woo-satispay'),
@@ -238,7 +238,7 @@ class WC_Satispay extends WC_Payment_Gateway {
   }
 
   public function is_available() {
-    if (!$this->enabled) {
+    if ($this->get_option('enabled') === 'no') {
       return false;
     }
     return true;
@@ -258,7 +258,7 @@ class WC_Satispay extends WC_Payment_Gateway {
 
     $payment = \SatispayGBusiness\Payment::create(array(
       'flow' => 'MATCH_CODE',
-      'amount_unit' => $order->get_total() * 100,
+      'amount_unit' => round($order->get_total() * 100),
       'currency' => (method_exists($order, 'get_currency')) ? $order->get_currency() : $order->order_currency,
       'callback_url' => $callbackUrl,
       'external_code' => $order->get_id(),

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WooCommerce Satispay plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Satispay 1.5.2\n"
+"Project-Id-Version: WooCommerce Satispay 2.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-satispay\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #. Description of the plugin
 #: wc-satispay.php:13
-msgid "Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart"
+msgid "Do it smart. Choose Satispay and pay with a tap!"
 msgstr ""
 
 #. Author of the plugin
@@ -69,8 +69,11 @@ msgid "Sandbox Mode can be used to test payments. Request a <a href=\"%s\" targe
 msgstr ""
 
 #: wc-satispay.php:121
+msgid "Finalize unhandled payments"
+msgstr ""
+
 #: wc-satispay.php:122
-msgid "Finalize Unhandled Transactions"
+msgid "Enable cron"
 msgstr ""
 
 #: wc-satispay.php:125
@@ -79,11 +82,11 @@ msgstr ""
 
 #: wc-satispay.php:128
 #: wc-satispay.php:129
-msgid "Finalize Max Hours"
+msgid "Finalize pending payments up to"
 msgstr ""
 
 #: wc-satispay.php:132
-msgid "Max time used to choose unhandled Satispay payments to finalize, the default is 4 hours for the oldest payments."
+msgid "Choose a number of hours, default is four and minimum is two."
 msgstr ""
 
 #: wc-satispay.php:215
