@@ -145,6 +145,10 @@ class WC_Satispay extends WC_Payment_Gateway {
     switch($_GET['action']) {
       case 'redirect':
         $paymentId = WC()->session->get('satispay_payment_id');
+        if (!$paymentId) {
+            header('Location: '.$this->get_return_url(''));
+            break;
+        }
         $payment = \SatispayGBusiness\Payment::get($paymentId);
         $order = new WC_Order($payment->metadata->order_id);
 
