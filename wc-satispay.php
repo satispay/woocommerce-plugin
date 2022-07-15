@@ -144,22 +144,11 @@ class WC_Satispay extends WC_Payment_Gateway {
   public function gateway_api() {
     switch($_GET['action']) {
       case 'redirect':
-        $payment = \SatispayGBusiness\Payment::get($_GET['payment_id']);
+        $paymentId = WC()->session->get('satispay_payment_id');
+        $payment = \SatispayGBusiness\Payment::get($paymentId);
         $order = new WC_Order($payment->metadata->order_id);
 
         if ($payment->status === 'ACCEPTED') {
-          try {
-                $order->set_transaction_id($payment->id);
-                $order->save();
-          } catch (\Exception $e) {
-            if (function_exists('wc_get_logger')) {
-              $logger = wc_get_logger();
-              $logger->debug(
-                'Order id - ' . $order->get_id() . ' - Could not save transaction Id for payment due to the following error: ' . $e->getMessage(),
-                array('source' => 'satispay')
-              );
-            }
-          }
           header('Location: '.$this->get_return_url($order));
         } else {
           \SatispayGBusiness\Payment::update($payment->id, array(
@@ -250,10 +239,10 @@ class WC_Satispay extends WC_Payment_Gateway {
     $apiUrl = WC()->api_request_url('WC_Gateway_Satispay');
     if (strpos($apiUrl, '?') !== FALSE) {
       $callbackUrl = $apiUrl.'&action=callback&payment_id={uuid}';
-      $redirectUrl = $apiUrl.'&action=redirect&payment_id={uuid}';
+      $redirectUrl = $apiUrl.'&action=redirect';
     } else {
       $callbackUrl = $apiUrl.'?action=callback&payment_id={uuid}';
-      $redirectUrl = $apiUrl.'?action=redirect&payment_id={uuid}';
+      $redirectUrl = $apiUrl.'?action=redirect';
     }
 
     $payment = \SatispayGBusiness\Payment::create(array(
@@ -262,20 +251,29 @@ class WC_Satispay extends WC_Payment_Gateway {
       'currency' => (method_exists($order, 'get_currency')) ? $order->get_currency() : $order->order_currency,
       'callback_url' => $callbackUrl,
       'external_code' => $order->get_id(),
+      'redirect_url' => $redirectUrl,
       'metadata' => array(
-        'order_id' => $order->get_id(),
-        'redirect_url' => $redirectUrl
+        'order_id' => $order->get_id()
       )
     ));
 
-    $paymentUrl = 'https://online.satispay.com/pay/';
-    if ($this->get_option('sandbox') == 'yes') {
-      $paymentUrl = 'https://staging.online.satispay.com/pay/';
+    try {
+        $order->set_transaction_id($payment->id);
+        WC()->session->set('satispay_payment_id', $payment->id);
+        $order->save();
+    } catch (\Exception $e) {
+        if (function_exists('wc_get_logger')) {
+            $logger = wc_get_logger();
+            $logger->debug(
+                'Order id - ' . $order->get_id() . ' - Could not save transaction Id for payment due to the following error: ' . $e->getMessage(),
+                array('source' => 'satispay')
+            );
+        }
     }
 
     return array(
       'result' => 'success',
-      'redirect' => $paymentUrl.$payment->id
+      'redirect' => $payment->redirect_url
     );
   }
 
