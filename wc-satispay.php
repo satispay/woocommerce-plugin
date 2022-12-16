@@ -19,7 +19,7 @@ class WC_Satispay extends WC_Payment_Gateway {
 
     $this->title                = $this->method_title;
     $this->description          = $this->method_description;
-    $this->icon                 = plugins_url('/logo.png', __FILE__);
+    $this->icon                 = plugins_url('/logo.svg', __FILE__);
 
     $this->init_form_fields();
     $this->init_settings();

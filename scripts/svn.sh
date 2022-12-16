@@ -6,7 +6,7 @@ svn co https://plugins.svn.wordpress.org/woo-satispay tmp-svn
 cp -R satispay-sdk tmp-svn/trunk
 cp LICENSE tmp-svn/trunk
 cp readme.txt tmp-svn/trunk
-cp logo.png tmp-svn/trunk
+cp logo.svg tmp-svn/trunk
 cp wc-satispay.php tmp-svn/trunk
 cp woo-satispay.php tmp-svn/trunk
 cp woo-satispay.pot tmp-svn/trunk
