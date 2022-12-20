@@ -1,42 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 26.4.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1"
-	 id="svg10" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" inkscape:version="1.0 (4035a4fb49, 2020-05-01)" sodipodi:docname="Logo Satispay.svg"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 226.6 226.7"
-	 style="enable-background:new 0 0 226.6 226.7;" xml:space="preserve">
-<style type="text/css">
-	.st0{clip-path:url(#SVGID_00000156564951110642932480000006483412415346668440_);}
-	.st1{fill:#EF373F;}
-</style>
-<sodipodi:namedview  bordercolor="#666666" borderopacity="1" gridtolerance="10" guidetolerance="10" id="namedview12" inkscape:current-layer="g18" inkscape:cx="482.28805" inkscape:cy="212.20198" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-height="961" inkscape:window-maximized="1" inkscape:window-width="1280" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:zoom="0.91848149" objecttolerance="10" pagecolor="#ffffff" showgrid="false">
-	</sodipodi:namedview>
-<g id="g18" transform="matrix(1.3333333,0,0,-1.3333333,-84.171364,689.98197)" inkscape:groupmode="layer" inkscape:label="guida-partner-satispay">
-	<g id="g88" transform="matrix(3.8126235,0,0,3.8126235,-1248.5169,-989.49222)">
-		<g>
-			<defs>
-				<rect id="SVGID_1_" x="-32.3" y="262.5" width="938.6" height="220.9"/>
-			</defs>
-			<clipPath id="SVGID_00000139257591207855869460000003561471297461223077_">
-				<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
-			</clipPath>
-			<g id="g90" style="clip-path:url(#SVGID_00000139257591207855869460000003561471297461223077_);">
-				<g id="g140" transform="translate(378.7471,394.1002)">
-					<path id="path142" class="st1" d="M0.7-0.6c0.4,0.4,0.1,1.2-0.5,1.2H-9.9L-4-5.3L0.7-0.6z"/>
-				</g>
-				<g id="g144" transform="translate(364.6564,380.0093)">
-					<path id="path146" class="st1" d="M0.7-0.6l-7.2,7.2L-13,0.1l-6.7-6.7c-0.3-0.3-0.3-0.7,0-1l6.7-6.7l6.5-6.5l7.2,7.2l-6,6
-						l-0.5,0.5l0.5,0.5L0.7-0.6z"/>
-				</g>
-				<g id="g148" transform="translate(374.0457,357.6413)">
-					<path id="path150" class="st1" d="M0.7-0.6l-5.8-5.8h10c0.6,0,0.9,0.7,0.5,1.2L0.7-0.6z"/>
-				</g>
-				<g id="g152" transform="translate(387.2654,374.0003)">
-					<path id="path154" class="st1" d="M0.7-0.6l-6.7,6.7l-7.6,7.6l-6.8,6.8c-0.1,0.1-0.3,0.2-0.5,0.2c0,0,0,0,0,0h-12.5
-						c-0.6,0-0.9-0.7-0.5-1.2l5.8-5.8l7.2-7.2l7.1-7.1l0.5-0.5l-0.5-0.5l-7.1-7.1l-7.2-7.2l-5.8-5.8c-0.4-0.4-0.1-1.2,0.5-1.2h12.5
-						h0c0.2,0,0.4,0.1,0.5,0.2l6.7,6.7l7.6,7.6l6.7,6.7C0.9-1.3,0.9-0.8,0.7-0.6"/>
-				</g>
-			</g>
-		</g>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+    <defs>
+        <clipPath id="Satispay">
+            <path d="M0 0h24v24H0z" />
+        </clipPath>
+    </defs>
+    <g clip-path="url(#Satispay)">
+        <rect width="24" height="24" fill="#f94c43" data-name="Rectangle 13" rx="5" />
+        <path fill="#fff"
+            d="M16.774 4.226a.129.129 0 0 0 .028-.144A.127.127 0 0 0 16.68 4h-3.474l1.9 1.9Z"
+            data-name="Path 2" />
+        <path fill="#fff"
+            d="m11.42 14.431-2.426-2.426 2.426-2.426-2.522-2.523-4.856 4.855a.132.132 0 0 0 0 .188l4.856 4.854Z"
+            data-name="Path 3" />
+        <path fill="#fff" d="M15.103 18.112 13.219 20h3.456a.133.133 0 0 0 .093-.227Z"
+            data-name="Path 4" />
+        <path fill="#fff"
+            d="M12.087 4.039a.135.135 0 0 0-.09-.038H7.321a.127.127 0 0 0-.122.082.129.129 0 0 0 .028.144l7.78 7.78-7.773 7.767a.133.133 0 0 0 .093.227h4.672a.141.141 0 0 0 .1-.038l7.864-7.864a.135.135 0 0 0 0-.188Z"
+            data-name="Path 5" />
+    </g>
 </svg>
