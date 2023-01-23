@@ -13,6 +13,6 @@ cp woo-satispay.pot tmp-svn/trunk
 
 echo "\nnext manual commands:"
 echo "  (cd tmp-svn && svn add trunk/**/* && tmp-svn svn stat)"
-echo "  (cd tmp-svn && svn ci --username satispay -m 'My changelog')"
-echo "  (cd tmp-svn && svn cp trunk tags/x.x.x)"
-echo "  (cd tmp-svn && svn ci --username satispay -m 'Created tag x.x.x')"
+echo "  (svn ci --username satispay -m 'My changelog')"
+echo "  (svn cp trunk tags/x.x.x)"
+echo "  (svn ci --username satispay -m 'Created tag x.x.x')"
