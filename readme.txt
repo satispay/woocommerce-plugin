@@ -36,10 +36,10 @@ Manage all of your refund requests directly with the Refund function integrated 
 As soon as the customer confirms the payment, the transaction is completed, thus eliminating the possibility of chargeback.
 
 == Changelog ==
-= 2.1.9
+= 2.1.9 =
 * No changelog
 
-= 2.1.8
+= 2.1.8 =
 * Reverted - Compatibility checked to 6.2.2
 
 = 2.1.7 =
