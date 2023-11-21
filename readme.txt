@@ -40,10 +40,10 @@ As soon as the customer confirms the payment, the transaction is completed, thus
 * No changelog
 
 = 2.1.8 =
-* Reverted - Compatibility checked to 6.2.2
+* No Changelog
 
 = 2.1.7 =
-* Compatibility check - Tested till 6.4.1 
+* No Changelog
 
 = 2.1.6 =
 * Updated Dashboard link with the new one 
