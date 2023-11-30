@@ -5,10 +5,16 @@
  * Description: Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart
  * Author: Satispay
  * Author URI: https://www.satispay.com/
- * Version: 2.1.7
- * WC requires at least: 3.4.0
- * WC tested up to: 6.4.1
+ * Version: 2.1.10
+ * WC requires at least: 4.6
+ * WC tested up to: 8.3.1
  */
+add_action( 'before_woocommerce_init', function() {
+    if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, false );
+    }
+} );
 add_action('plugins_loaded', 'wc_satispay_init', 0);
 add_filter('cron_schedules', 'wc_satispay_cron_schedule');
 function wc_satispay_init() {
