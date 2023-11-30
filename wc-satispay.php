@@ -103,13 +103,6 @@ class WC_Satispay extends WC_Payment_Gateway {
         'type' => 'text',
         'description' => sprintf(__('Get a six characters Activation Code from Online Shop section on <a href="%s" target="_blank">Satispay Dashboard</a>.', 'woo-satispay'), 'https://dashboard.satispay.com')
       ),
-      
-      // 'advanced' => array(
-      //   'title' => __( 'Advanced Options', 'woo-satispay' ),
-      //   'type' => 'title',
-      //   'description' => '',
-      // ),
-
       'sandbox' => array(
         'title' => __('Sandbox', 'woo-satispay'),
         'label' => __('Sandbox Mode', 'woo-satispay'),
@@ -131,13 +124,6 @@ class WC_Satispay extends WC_Payment_Gateway {
         'default' => 4,
         'description' => sprintf(__('Choose a number of hours, default is four and minimum is two.', 'woo-satispay'))
       )
-      // 'debug' => array(
-      //   'title' => __('Debug Logs', 'woo-satispay'),
-      //   'label' => __('Enable Logs', 'woo-satispay'),
-      //   'type' => 'checkbox',
-      //   'default' => 'no',
-      //   'description' => sprintf(__('Log Satispay requests inside %s.<br />Note: this may log personal informations. We recommend using this for debugging purposes only and deleting the logs when finished.', 'woo-satispay'), '<code>'.WC_Log_Handler_File::get_log_file_path('satispay').'</code>')
-      // )
     );
   }
 
