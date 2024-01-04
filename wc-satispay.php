@@ -39,14 +39,20 @@ class WC_Satispay extends WC_Payment_Gateway {
   public function process_refund($order, $amount = null, $reason = '') {
     $order = new WC_Order($order);
 
-    \SatispayGBusiness\Payment::create(array(
-      'flow' => 'REFUND',
-      'amount_unit' => round($amount * 100),
-      'currency' => (method_exists($order, 'get_currency')) ? $order->get_currency() : $order->order_currency,
-      'parent_payment_uid' => $order->get_transaction_id()
-    ));
+    try {
+      $response = \SatispayGBusiness\Payment::create(array(
+        'flow' => 'REFUND',
+        'amount_unit' => round($amount * 100),
+        'currency' => (method_exists($order, 'get_currency')) ? $order->get_currency() : $order->order_currency,
+        'parent_payment_uid' => $order->get_transaction_id()
+      ));
 
-    return true;
+      return isset($response->status) && $response->status === 'ACCEPTED';
+    } catch (\Exception $e) {
+      error_log('Statispay Refund Error: ' . $e->getMessage());
+    }
+
+    return false;
   }
 
   public function finalize_orders() {
