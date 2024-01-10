@@ -14,6 +14,8 @@ const defaultDescription = __(
 	'Do it smart. Choose Satispay and pay with a tap!'
 );
 
+const iconUrl = settings.icon;
+
 const label = decodeEntities( settings.title ) || defaultLabel;
 /**
  * Content component
@@ -28,7 +30,8 @@ const Content = () => {
  */
 const Label = ( props ) => {
 	const { PaymentMethodLabel } = props.components;
-	return <PaymentMethodLabel text={ label } />;
+	const icon = <img src={iconUrl} alt={label} name={label} />
+	return <PaymentMethodLabel text={label} icon={icon} />;
 };
 
 /**
@@ -44,6 +47,7 @@ const Satispay = {
 	supports: {
 		features: settings.supports,
 	},
+	icon: settings.icon
 };
 
 registerPaymentMethod( Satispay );

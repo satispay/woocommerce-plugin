@@ -80,9 +80,13 @@ final class WC_Satispay_Blocks extends AbstractPaymentMethodType {
      * @return array
      */
     public function get_payment_method_data() {
+        $logger  = wc_get_logger();
+        $context = array( 'source Log' => 'Satispay' );
+        $logger->error( json_encode($this->gateway), $context );
         return [
-            'title'       => $this->get_setting('title'),
-            'description' => $this->get_setting('description'),
+            'title'       => $this->gateway->title,
+            'description' => $this->gateway->description,
+            'icon' => $this->gateway->icon,
             'supports'    => array_filter( $this->gateway->supports, [ $this->gateway, 'supports' ] )
         ];
     }
