@@ -7,7 +7,7 @@
  * Author URI: https://www.satispay.com/
  * Version: 2.1.10
  * WC requires at least: 4.6
- * WC tested up to: 8.3.1
+ * WC tested up to: 8.4.0
  */
 
 // Exit if accessed directly.
