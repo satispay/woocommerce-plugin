@@ -292,6 +292,25 @@ class WC_Satispay extends WC_Payment_Gateway {
     $tosub = new \DateInterval('PT'. 1 . 'H');
     return strtotime($now->sub($tosub)->format('Y-m-d H:i:s'));
   }
+
+    /**
+     * Plugin url.
+     *
+     * @return string
+     */
+    public static function plugin_abspath() {
+        return trailingslashit( plugin_dir_path( __FILE__ ) );
+    }
+
+    /**
+     * Plugin url.
+     *
+     * @return string
+     */
+    public static function plugin_url() {
+        return untrailingslashit( plugins_url( '/', __FILE__ ) );
+    }
+
 }
 
 function wc_satispay_finalize_orders()
