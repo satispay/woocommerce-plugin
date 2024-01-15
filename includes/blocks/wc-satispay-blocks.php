@@ -13,13 +13,6 @@ defined( 'ABSPATH' ) || exit;
 final class WC_Satispay_Blocks extends AbstractPaymentMethodType {
 
     /**
-     * The gateway instance.
-     *
-     * @var WC_Satispay
-     */
-    private $gateway;
-
-    /**
      * Payment method name defined by payment methods extending this class.
      *
      * @var string
@@ -31,7 +24,6 @@ final class WC_Satispay_Blocks extends AbstractPaymentMethodType {
      */
     public function initialize() {
         $this->settings = get_option( 'woocommerce_satispay_settings', [] );
-        $this->gateway  = new WC_Satispay();
     }
 
     /**
@@ -40,7 +32,10 @@ final class WC_Satispay_Blocks extends AbstractPaymentMethodType {
      * @return boolean
      */
     public function is_active() {
-        return $this->gateway->is_available();
+        if ($this->get_setting('enabled') === 'no') {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -81,10 +76,13 @@ final class WC_Satispay_Blocks extends AbstractPaymentMethodType {
      */
     public function get_payment_method_data() {
         return [
-            'title'       => $this->gateway->title,
-            'description' => $this->gateway->description,
-            'icon' => $this->gateway->icon,
-            'supports'    => array_filter( $this->gateway->supports, [ $this->gateway, 'supports' ] )
+            'title'       => __('Satispay', 'woo-satispay'),
+            'description' => __('Do it smart. Choose Satispay and pay with a tap!', 'woo-satispay'),
+            'icon' => WC_Satispay::plugin_url() . '/logo.svg',
+            'supports'    => array(
+                'products',
+                'refunds'
+            )
         ];
     }
 }
