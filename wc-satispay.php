@@ -6,16 +6,22 @@ if (!defined('ABSPATH')) {
 require_once(__DIR__ . '/satispay-sdk/init.php');
 
 class WC_Satispay extends WC_Payment_Gateway {
+
+    const METHOD_TITLE = 'Satispay';
+    const ORDER_BUTTON_TEXT = 'Pay with Satispay';
+    const METHOD_DESCRIPTION = 'Do it smart. Choose Satispay and pay with a tap!';
+    const SUPPORTS = array(
+        'products',
+        'refunds'
+    );
+
   public function __construct() {
     $this->id                   = 'satispay';
-    $this->method_title         = __('Satispay', 'woo-satispay');
-    $this->order_button_text    = __('Pay with Satispay', 'woo-satispay');
-    $this->method_description   = __('Do it smart. Choose Satispay and pay with a tap!', 'woo-satispay');
+    $this->method_title         = __(self::METHOD_TITLE, 'woo-satispay');
+    $this->order_button_text    = __(self::ORDER_BUTTON_TEXT, 'woo-satispay');
+    $this->method_description   = __(self::METHOD_DESCRIPTION, 'woo-satispay');
     $this->has_fields           = false;
-    $this->supports             = array(
-      'products',
-      'refunds'
-    );
+    $this->supports             = self::SUPPORTS;
 
     $this->title                = $this->method_title;
     $this->description          = $this->method_description;
@@ -39,14 +45,20 @@ class WC_Satispay extends WC_Payment_Gateway {
   public function process_refund($order, $amount = null, $reason = '') {
     $order = new WC_Order($order);
 
-    \SatispayGBusiness\Payment::create(array(
-      'flow' => 'REFUND',
-      'amount_unit' => round($amount * 100),
-      'currency' => (method_exists($order, 'get_currency')) ? $order->get_currency() : $order->order_currency,
-      'parent_payment_uid' => $order->get_transaction_id()
-    ));
+    try {
+      $response = \SatispayGBusiness\Payment::create(array(
+        'flow' => 'REFUND',
+        'amount_unit' => round($amount * 100),
+        'currency' => (method_exists($order, 'get_currency')) ? $order->get_currency() : $order->order_currency,
+        'parent_payment_uid' => $order->get_transaction_id()
+      ));
 
-    return true;
+      return isset($response->status) && $response->status === 'ACCEPTED';
+    } catch (\Exception $e) {
+      error_log('Statispay Refund Error: ' . $e->getMessage());
+    }
+
+    return false;
   }
 
   public function finalize_orders() {
@@ -292,6 +304,25 @@ class WC_Satispay extends WC_Payment_Gateway {
     $tosub = new \DateInterval('PT'. 1 . 'H');
     return strtotime($now->sub($tosub)->format('Y-m-d H:i:s'));
   }
+
+    /**
+     * Plugin url.
+     *
+     * @return string
+     */
+    public static function plugin_abspath() {
+        return trailingslashit( plugin_dir_path( __FILE__ ) );
+    }
+
+    /**
+     * Plugin url.
+     *
+     * @return string
+     */
+    public static function plugin_url() {
+        return untrailingslashit( plugins_url( '/', __FILE__ ) );
+    }
+
 }
 
 function wc_satispay_finalize_orders()
