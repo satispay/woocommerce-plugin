@@ -6,16 +6,22 @@ if (!defined('ABSPATH')) {
 require_once(__DIR__ . '/satispay-sdk/init.php');
 
 class WC_Satispay extends WC_Payment_Gateway {
+
+    const METHOD_TITLE = 'Satispay';
+    const ORDER_BUTTON_TEXT = 'Pay with Satispay';
+    const METHOD_DESCRIPTION = 'Do it smart. Choose Satispay and pay with a tap!';
+    const SUPPORTS = array(
+        'products',
+        'refunds'
+    );
+
   public function __construct() {
     $this->id                   = 'satispay';
-    $this->method_title         = __('Satispay', 'woo-satispay');
-    $this->order_button_text    = __('Pay with Satispay', 'woo-satispay');
-    $this->method_description   = __('Do it smart. Choose Satispay and pay with a tap!', 'woo-satispay');
+    $this->method_title         = __(self::METHOD_TITLE, 'woo-satispay');
+    $this->order_button_text    = __(self::ORDER_BUTTON_TEXT, 'woo-satispay');
+    $this->method_description   = __(self::METHOD_DESCRIPTION, 'woo-satispay');
     $this->has_fields           = false;
-    $this->supports             = array(
-      'products',
-      'refunds'
-    );
+    $this->supports             = self::SUPPORTS;
 
     $this->title                = $this->method_title;
     $this->description          = $this->method_description;
