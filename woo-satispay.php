@@ -28,14 +28,14 @@ function wc_satispay_init() {
 	include_once('wc-satispay.php');
 
     // Make the Satispay Payments gateway available to WC.
-	add_filter('woocommerce_payment_gateways', 'wc_satispay_add_gateway');
+	add_filter('woocommerce_payment_gateways', 'wc_satispay_add_gateway', PHP_INT_MAX);
     function wc_satispay_add_gateway($methods) {
         $methods[] = 'WC_Satispay';
         return $methods;
     }
 
     // Registers WooCommerce Blocks integration.
-    add_action( 'woocommerce_blocks_loaded', 'woocommerce_gateway_satispay_woocommerce_block_support' );
+    add_action( 'woocommerce_blocks_loaded', 'woocommerce_gateway_satispay_woocommerce_block_support');
     function woocommerce_gateway_satispay_woocommerce_block_support() {
         if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
             require_once 'includes/blocks/wc-satispay-blocks.php';
