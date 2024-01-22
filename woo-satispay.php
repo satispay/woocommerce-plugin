@@ -35,7 +35,7 @@ function wc_satispay_init() {
     }
 
     // Registers WooCommerce Blocks integration.
-    add_action( 'woocommerce_blocks_loaded', 'woocommerce_gateway_satispay_woocommerce_block_support' );
+    add_action( 'woocommerce_blocks_loaded', 'woocommerce_gateway_satispay_woocommerce_block_support');
     function woocommerce_gateway_satispay_woocommerce_block_support() {
         if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
             require_once 'includes/blocks/wc-satispay-blocks.php';
