@@ -28,7 +28,7 @@ function wc_satispay_init() {
 	include_once('wc-satispay.php');
 
     // Make the Satispay Payments gateway available to WC.
-	add_filter('woocommerce_payment_gateways', 'wc_satispay_add_gateway');
+	add_filter('woocommerce_payment_gateways', 'wc_satispay_add_gateway', PHP_INT_MAX);
     function wc_satispay_add_gateway($methods) {
         $methods[] = 'WC_Satispay';
         return $methods;
