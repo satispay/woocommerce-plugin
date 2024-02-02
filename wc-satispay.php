@@ -16,6 +16,9 @@ class WC_Satispay extends WC_Payment_Gateway {
     );
 
   public function __construct() {
+    if ((!empty($_GET['section'])) && ($_GET['section'] == 'satispay')) {
+      $GLOBALS['hide_save_button'] = false;
+    }
     $this->id                   = 'satispay';
     $this->method_title         = __(self::METHOD_TITLE, 'woo-satispay');
     $this->order_button_text    = __(self::ORDER_BUTTON_TEXT, 'woo-satispay');
@@ -40,6 +43,7 @@ class WC_Satispay extends WC_Payment_Gateway {
     \SatispayGBusiness\Api::setPublicKey($this->get_option('publicKey'));
     \SatispayGBusiness\Api::setPrivateKey($this->get_option('privateKey'));
     \SatispayGBusiness\Api::setKeyId($this->get_option('keyId'));
+    add_action('woocommerce_available_payment_gateways', array($this, 'check_gateway'), 15);
   }
 
   public function process_refund($order, $amount = null, $reason = '') {
@@ -321,6 +325,24 @@ class WC_Satispay extends WC_Payment_Gateway {
      */
     public static function plugin_url() {
         return untrailingslashit( plugins_url( '/', __FILE__ ) );
+    }
+
+    /**
+     * Check if method has been added correctly
+     *
+     * @param array
+     * @return array
+     */
+    public function check_gateway($gateways)
+    {
+        if (isset($gateways[$this->id])) {
+            return $gateways;
+        }
+        if ($this->is_available()) {
+            $gateways[$this->id] = $this;
+        }
+
+        return $gateways;
     }
 
 }
