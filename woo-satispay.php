@@ -5,9 +5,8 @@
  * Description: Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart
  * Author: Satispay
  * Author URI: https://www.satispay.com/
- * Version: 2.1.10
- * WC requires at least: 4.6
- * WC tested up to: 8.4.0
+ * Version: 2.2.0
+ * WC tested up to: 8.5.2
  */
 
 // Exit if accessed directly.
