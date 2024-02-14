@@ -72,7 +72,7 @@ class WC_Satispay extends WC_Payment_Gateway {
       $orders = wc_get_orders(array(
         'limit' => -1,
         'type' => 'shop_order',
-        'status' => array('wc-pending'),
+        'status' => array('wc-pending','wc-on-hold'),
         'date_created'=> $rangeStart .'...'. $rangeEnd
       )
     );
@@ -264,6 +264,7 @@ class WC_Satispay extends WC_Payment_Gateway {
     ));
 
     try {
+        $order->update_status('wc-on-hold');
         $order->set_transaction_id($payment->id);
         WC()->session->set('satispay_payment_id', $payment->id);
         $order->save();
