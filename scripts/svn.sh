@@ -10,6 +10,10 @@ cp logo.svg tmp-svn/trunk
 cp wc-satispay.php tmp-svn/trunk
 cp woo-satispay.php tmp-svn/trunk
 cp woo-satispay.pot tmp-svn/trunk
+cp -R assets  tmp-svn/trunk
+cp -R includes tmp-svn/trunk
+cp -R resources tmp-svn/trunk
+
 
 echo "\nnext manual commands:"
 echo "  (cd tmp-svn && svn add trunk/**/* && tmp-svn svn stat)"
