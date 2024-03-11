@@ -93,6 +93,11 @@ class WC_Satispay extends WC_Payment_Gateway {
             $order->add_order_note('The Satispay Payment has been finalized by custom cron action');
             $order->save();
           }
+          if ($payment->status === 'CANCELED') {
+              $order->update_status("wc-cancelled");
+              $order->add_order_note('The Satispay Payment has been cancelled by custom cron action');
+              $order->save();
+          }
         }
       } catch (\Exception $e) {
           if (function_exists('wc_get_logger')) {
@@ -174,6 +179,9 @@ class WC_Satispay extends WC_Payment_Gateway {
 
         if ($payment->status === 'ACCEPTED') {
           $order->payment_complete($payment->id);
+        }
+        if ($payment->status === 'CANCELED') {
+            $order->update_status("wc-cancelled");
         }
         break;
     }
