@@ -165,8 +165,7 @@ class WC_Satispay extends WC_Payment_Gateway {
           \SatispayGBusiness\Payment::update($payment->id, array(
             'action' => 'CANCEL'
           ));
-
-          header('Location: '.$order->get_cancel_order_url_raw());
+          header('Location: '. WC()->cart->get_checkout_url());
         }
         break;
       case 'callback':
