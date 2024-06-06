@@ -2,8 +2,8 @@
 Contributors: Satispay
 Tags: woocommerce, satispay, payment method
 Requires at least: 5.0
-Tested up to: 6.5.0
-Stable tag: 2.2.2
+Tested up to: 6.5.4
+Stable tag: 2.2.3
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -36,17 +36,21 @@ Manage all of your refund requests directly with the Refund function integrated 
 As soon as the customer confirms the payment, the transaction is completed, thus eliminating the possibility of chargeback.
 
 == Changelog ==
-= 2.2.2
+= 2.2.3 =
+* Updated Visual Assets
+
+
+= 2.2.2 =
 * Fixed Order cancellation
 * Bugfixes and Improvements
 
 
-= 2.2.0
+= 2.2.0 =
 * Added compatibility to WooCommerce Blocks Checkout and HPOS feature 
 * Improved ordering management (new status: "On Hold")
 * Bugfixes and improvements
 
-= 2.1.9
+= 2.1.9 =
 * No changelog
 
 = 2.1.8 =
