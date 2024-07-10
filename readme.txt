@@ -2,8 +2,8 @@
 Contributors: Satispay
 Tags: woocommerce, satispay, payment method
 Requires at least: 5.0
-Tested up to: 6.5.4
-Stable tag: 2.2.5
+Tested up to: 6.6.0
+Stable tag: 2.2.6
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -36,6 +36,9 @@ Manage all of your refund requests directly with the Refund function integrated 
 As soon as the customer confirms the payment, the transaction is completed, thus eliminating the possibility of chargeback.
 
 == Changelog ==
+= 2.2.6 =
+* Updated compatibility to WP-6.6.0
+
 = 2.2.5 =
 * Fixed logo resizing issue
 
