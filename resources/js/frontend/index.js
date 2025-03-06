@@ -11,7 +11,7 @@ const defaultLabel = __(
 );
 
 const defaultDescription = __(
-	'Do it smart. Choose Satispay and pay with a tap!'
+	'People Paying People. Choose Satispay and pay with a tap!'
 );
 
 const iconUrl = settings.icon;

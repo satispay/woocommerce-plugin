@@ -9,7 +9,7 @@ class WC_Satispay extends WC_Payment_Gateway {
 
     const METHOD_TITLE = 'Satispay';
     const ORDER_BUTTON_TEXT = 'Pay with Satispay';
-    const METHOD_DESCRIPTION = 'Do it smart. Choose Satispay and pay with a tap!';
+    const METHOD_DESCRIPTION = 'People Paying People. Choose Satispay and pay with a tap!';
     const SUPPORTS = array(
         'products',
         'refunds'
