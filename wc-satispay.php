@@ -8,7 +8,7 @@ require_once(__DIR__ . '/satispay-sdk/init.php');
 class WC_Satispay extends WC_Payment_Gateway {
 
     const METHOD_TITLE = 'Satispay';
-    const METHOD_DESCRIPTION = 'People Paying People. Choose Satispay and pay with a tap!';
+    const METHOD_DESCRIPTION = 'People Paying People';
     const SUPPORTS = array(
         'products',
         'refunds'
@@ -21,7 +21,7 @@ class WC_Satispay extends WC_Payment_Gateway {
     $this->id                   = 'satispay';
     $this->method_title         = __('Satispay', 'woo-satispay');
     $this->order_button_text    = __('Pay with Satispay', 'woo-satispay');
-    $this->method_description   = __('People Paying People. Choose Satispay and pay with a tap!', 'woo-satispay');
+    $this->method_description   = __('People Paying People', 'woo-satispay');
     $this->has_fields           = false;
     $this->supports             = self::SUPPORTS;
 
