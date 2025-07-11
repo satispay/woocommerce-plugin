@@ -1,8 +1,8 @@
-=== WooCommerce Satispay ===
+=== Satispay for WooCommerce ===
 Contributors: Satispay
 Tags: woocommerce, satispay, payment method
 Requires at least: 5.0
-Tested up to: 6.6.0
+Tested up to: 6.8.1
 Stable tag: 2.2.6
 License: MIT
 License URI: https://opensource.org/licenses/MIT
