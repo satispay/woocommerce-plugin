@@ -7,7 +7,7 @@ Stable tag: 2.2.7
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart
+Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #peoplepayingpeople
 
 == Description ==
 
@@ -36,8 +36,14 @@ Manage all of your refund requests directly with the Refund function integrated 
 As soon as the customer confirms the payment, the transaction is completed, thus eliminating the possibility of chargeback.
 
 == Changelog ==
+<<<<<<< HEAD
+
+= 2.2.7 =
+* Updated translations
+=======
 = 2.2.7 =
 * Updated compatibility to WP-6.8.1
+>>>>>>> master
 
 = 2.2.6 =
 * Updated compatibility to WP-6.6.0

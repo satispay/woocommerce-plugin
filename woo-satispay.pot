@@ -26,11 +26,14 @@ msgstr ""
 
 #. Description of the plugin
 #: woo-satispay.php
-msgid "Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart"
+msgid "Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #peoplepayingpeople"
 msgstr ""
 
 #. Author of the plugin
 #: woo-satispay.php
+#: wc-satispay.php:22
+#: assets/js/frontend/blocks.js:1
+#: resources/js/frontend/index.js:9
 msgid "Satispay"
 msgstr ""
 
@@ -39,15 +42,25 @@ msgstr ""
 msgid "https://www.satispay.com/"
 msgstr ""
 
-#: wc-satispay.php:117
+#: wc-satispay.php:23
+msgid "Pay with Satispay"
+msgstr ""
+
+#: wc-satispay.php:24
+#: assets/js/frontend/blocks.js:1
+#: resources/js/frontend/index.js:13
+msgid "People Paying People"
+msgstr ""
+
+#: wc-satispay.php:116
 msgid "Enable/Disable"
 msgstr ""
 
-#: wc-satispay.php:118
+#: wc-satispay.php:117
 msgid "Enable Satispay"
 msgstr ""
 
-#: wc-satispay.php:123
+#: wc-satispay.php:122
 msgid "Activation Code"
 msgstr ""
 
@@ -56,11 +69,11 @@ msgstr ""
 msgid "Get a six characters Activation Code from Online Shop section on <a href=\"%s\" target=\"_blank\">Satispay Dashboard</a>."
 msgstr ""
 
-#: wc-satispay.php:128
+#: wc-satispay.php:127
 msgid "Sandbox"
 msgstr ""
 
-#: wc-satispay.php:129
+#: wc-satispay.php:128
 msgid "Sandbox Mode"
 msgstr ""
 
@@ -69,24 +82,24 @@ msgstr ""
 msgid "Sandbox Mode can be used to test payments. Request a <a href=\"%s\" target=\"_blank\">Sandbox Account</a>."
 msgstr ""
 
-#: wc-satispay.php:135
+#: wc-satispay.php:134
 msgid "Finalize unhandled payments"
 msgstr ""
 
-#: wc-satispay.php:136
+#: wc-satispay.php:135
 msgid "Enable cron"
 msgstr ""
 
-#: wc-satispay.php:139
+#: wc-satispay.php:138
 msgid "Finalize unhandled Satispay payments with a cron."
 msgstr ""
 
+#: wc-satispay.php:141
 #: wc-satispay.php:142
-#: wc-satispay.php:143
 msgid "Finalize pending payments up to"
 msgstr ""
 
-#: wc-satispay.php:146
+#: wc-satispay.php:145
 msgid "Choose a number of hours, default is four and minimum is two."
 msgstr ""
 
@@ -102,4 +115,8 @@ msgstr ""
 
 #: woo-satispay.php:53
 msgid "Settings"
+msgstr ""
+
+#: woo-satispay.php:70
+msgid "Every 4 hours"
 msgstr ""
