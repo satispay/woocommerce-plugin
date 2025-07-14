@@ -1,6 +1,6 @@
 <?php
 /*
- * Plugin Name: WooCommerce Satispay
+ * Plugin Name: Satispay for WooCommerce
  * Plugin URI: https://wordpress.org/plugins/woo-satispay/
  * Description: Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #peoplepayingpeople
  * Author: Satispay
