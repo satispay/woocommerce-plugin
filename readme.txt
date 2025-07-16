@@ -2,7 +2,7 @@
 Contributors: Satispay
 Tags: woocommerce, satispay, payment method
 Requires at least: 5.0
-Tested up to: 6.8.1
+Tested up to: 6.8
 Stable tag: 2.2.7
 License: MIT
 License URI: https://opensource.org/licenses/MIT
@@ -34,6 +34,15 @@ Manage all of your refund requests directly with the Refund function integrated 
 
 **Eliminate the risk of chargeback**
 As soon as the customer confirms the payment, the transaction is completed, thus eliminating the possibility of chargeback.
+
+== External Services ==
+
+This plugin connects to the Satispay API to process payments. To function correctly, it sends payment and order details to Satispay's servers.
+This is essential for creating and verifying transactions.
+
+You can view Satispay's terms of service and privacy policy here:
+* Terms of Service: https://www.satispay.com/en-it/legal-hub/terms-and-conditions/
+* Privacy Policy: https://www.satispay.com/en-it/legal-hub/privacy-policy/
 
 == Changelog ==
 = 2.2.7 =
