@@ -3,7 +3,7 @@ Contributors: Satispay
 Tags: woocommerce, satispay, payment method
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 2.2.7
+Stable tag: 2.2.8
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -45,6 +45,9 @@ You can view Satispay's terms of service and privacy policy here:
 * Privacy Policy: https://www.satispay.com/en-it/legal-hub/privacy-policy/
 
 == Changelog ==
+= 2.2.8 =
+* Guidelines improvement
+
 = 2.2.7 =
 * Updated compatibility to WP-6.8.1
 
