@@ -47,6 +47,7 @@ class WC_Satispay extends WC_Payment_Gateway {
     add_filter('woocommerce_order_actions', array($this, 'add_order_actions'), 10, 2);
     add_action('woocommerce_order_action_satispay_capture_authorized_payment', array($this, 'capture_authorized_payment'));
     add_action('woocommerce_order_action_satispay_cancel_authorized_payment', array($this, 'cancel_authorized_payment'));
+    add_action('woocommerce_order_action_satispay_check_payment_status', array($this, 'check_payment_status'));
     add_action('woocommerce_thankyou_'.$this->id, array($this, 'render_thankyou_payment_features'));
     add_action('woocommerce_order_details_after_order_table', array($this, 'render_order_payment_features'));
     add_action('woocommerce_admin_order_data_after_order_details', array($this, 'render_admin_order_payment_features'));
@@ -136,15 +137,21 @@ class WC_Satispay extends WC_Payment_Gateway {
   }
 
   public function add_order_actions($actions, $order) {
-    if (!$order instanceof WC_Order || $order->get_payment_method() !== $this->id || !$this->is_late_capture_order($order)) {
+    if (!$order instanceof WC_Order || $order->get_payment_method() !== $this->id) {
       return $actions;
     }
 
-    $remoteStatus = $order->get_meta(self::ORDER_REMOTE_STATUS_META_KEY, true);
+    if ($order->get_transaction_id()) {
+      $actions['satispay_check_payment_status'] = __('Check Satispay payment status', 'woo-satispay');
+    }
 
-    if ($remoteStatus === 'AUTHORIZED' && !$order->has_status(wc_get_is_paid_statuses())) {
-      $actions['satispay_capture_authorized_payment'] = __('Capture authorized Satispay payment', 'woo-satispay');
-      $actions['satispay_cancel_authorized_payment'] = __('Cancel Satispay authorization', 'woo-satispay');
+    if ($this->is_late_capture_order($order)) {
+      $remoteStatus = $order->get_meta(self::ORDER_REMOTE_STATUS_META_KEY, true);
+
+      if ($remoteStatus === 'AUTHORIZED' && !$order->has_status(wc_get_is_paid_statuses())) {
+        $actions['satispay_capture_authorized_payment'] = __('Capture authorized Satispay payment', 'woo-satispay');
+        $actions['satispay_cancel_authorized_payment'] = __('Cancel Satispay authorization', 'woo-satispay');
+      }
     }
 
     return $actions;
@@ -180,6 +187,26 @@ class WC_Satispay extends WC_Payment_Gateway {
       $this->sync_order_with_payment($order, $payment, 'manual cancellation');
     } catch (\Exception $e) {
       $order->add_order_note(sprintf(__('Satispay cancellation failed: %s', 'woo-satispay'), $e->getMessage()));
+    }
+  }
+
+  public function check_payment_status($order) {
+    if (!$order instanceof WC_Order) {
+      return;
+    }
+
+    $transactionId = $order->get_transaction_id();
+
+    if (empty($transactionId)) {
+      $order->add_order_note(__('Satispay payment check skipped: no transaction ID found.', 'woo-satispay'));
+      return;
+    }
+
+    try {
+      $payment = \SatispayGBusiness\Payment::get($transactionId);
+      $this->sync_order_with_payment($order, $payment, 'manual check');
+    } catch (\Exception $e) {
+      $order->add_order_note(sprintf(__('Satispay payment check failed: %s', 'woo-satispay'), $e->getMessage()));
     }
   }
 
