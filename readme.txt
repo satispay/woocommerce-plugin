@@ -74,6 +74,7 @@ You can view Satispay's terms of service and privacy policy here:
 * Separated admin method_description from customer-facing checkout description
 * Declared cart_checkout_blocks feature compatibility
 * Added "Check Satispay payment status" order action for manual payment sync from admin
+* Added capture and cancel buttons in the order items area for late capture authorized payments
 
 = 2.2.9 =
 * Updated compatibility to WP-6.9

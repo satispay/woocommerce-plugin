@@ -1,4 +1,8 @@
 <?php
+
+use SatispayGBusiness\Api;
+use SatispayGBusiness\Payment;
+
 if (!defined('ABSPATH')) {
   exit;
 }
@@ -51,14 +55,18 @@ class WC_Satispay extends WC_Payment_Gateway {
     add_action('woocommerce_thankyou_'.$this->id, array($this, 'render_thankyou_payment_features'));
     add_action('woocommerce_order_details_after_order_table', array($this, 'render_order_payment_features'));
     add_action('woocommerce_admin_order_data_after_order_details', array($this, 'render_admin_order_payment_features'));
+    add_action('woocommerce_order_item_add_action_buttons', array($this, 'render_late_capture_buttons'));
+    add_action('wp_ajax_satispay_capture_payment', array($this, 'ajax_capture_payment'));
+    add_action('wp_ajax_satispay_cancel_payment', array($this, 'ajax_cancel_payment'));
+    add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
 
     if ($this->get_option('sandbox') == 'yes') {
-      \SatispayGBusiness\Api::setSandbox(true);
+      Api::setSandbox(true);
     }
 
-    \SatispayGBusiness\Api::setPublicKey($this->get_option('publicKey'));
-    \SatispayGBusiness\Api::setPrivateKey($this->get_option('privateKey'));
-    \SatispayGBusiness\Api::setKeyId($this->get_option('keyId'));
+    Api::setPublicKey($this->get_option('publicKey'));
+    Api::setPrivateKey($this->get_option('privateKey'));
+    Api::setKeyId($this->get_option('keyId'));
     add_filter('woocommerce_available_payment_gateways', array($this, 'check_gateway'), 15);
   }
 
@@ -84,7 +92,7 @@ class WC_Satispay extends WC_Payment_Gateway {
     $order = wc_get_order($order_id);
 
     try {
-      $response = \SatispayGBusiness\Payment::create(array(
+      $response = Payment::create(array(
         'flow' => 'REFUND',
         'amount_unit' => round($amount * 100),
         'currency' => $order->get_currency(),
@@ -92,7 +100,7 @@ class WC_Satispay extends WC_Payment_Gateway {
       ));
 
       return isset($response->status) && $response->status === 'ACCEPTED';
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       error_log('Statispay Refund Error: ' . $e->getMessage());
     }
 
@@ -118,13 +126,13 @@ class WC_Satispay extends WC_Payment_Gateway {
             continue;
           }
           //callback logic
-          $payment = \SatispayGBusiness\Payment::get($transactionId);
+          $payment = Payment::get($transactionId);
           if ($order->has_status(wc_get_is_paid_statuses()) && $payment->status !== 'ACCEPTED') {
             continue;
           }
           $this->sync_order_with_payment($order, $payment, 'custom cron action');
         }
-      } catch (\Exception $e) {
+      } catch (Exception $e) {
           if (function_exists('wc_get_logger')) {
             $logger = wc_get_logger();
             $logger->debug('An error occured when finalizing the order ' . $order->get_order_number() .
@@ -163,13 +171,13 @@ class WC_Satispay extends WC_Payment_Gateway {
     }
 
     try {
-      $payment = \SatispayGBusiness\Payment::update($order->get_transaction_id(), array(
+      $payment = Payment::update($order->get_transaction_id(), array(
         'action' => 'ACCEPT',
         'amount_unit' => round($order->get_total() * 100)
       ));
 
       $this->sync_order_with_payment($order, $payment, 'manual capture');
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $order->add_order_note(sprintf(__('Satispay capture failed: %s', 'woo-satispay'), $e->getMessage()));
     }
   }
@@ -180,12 +188,12 @@ class WC_Satispay extends WC_Payment_Gateway {
     }
 
     try {
-      $payment = \SatispayGBusiness\Payment::update($order->get_transaction_id(), array(
+      $payment = Payment::update($order->get_transaction_id(), array(
         'action' => 'CANCEL'
       ));
 
       $this->sync_order_with_payment($order, $payment, 'manual cancellation');
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $order->add_order_note(sprintf(__('Satispay cancellation failed: %s', 'woo-satispay'), $e->getMessage()));
     }
   }
@@ -203,11 +211,101 @@ class WC_Satispay extends WC_Payment_Gateway {
     }
 
     try {
-      $payment = \SatispayGBusiness\Payment::get($transactionId);
+      $payment = Payment::get($transactionId);
       $this->sync_order_with_payment($order, $payment, 'manual check');
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $order->add_order_note(sprintf(__('Satispay payment check failed: %s', 'woo-satispay'), $e->getMessage()));
     }
+  }
+
+  public function render_late_capture_buttons($order) {
+    if (!$order instanceof WC_Order || $order->get_payment_method() !== $this->id || !$this->is_late_capture_order($order)) {
+      return;
+    }
+
+    $remoteStatus = $order->get_meta(self::ORDER_REMOTE_STATUS_META_KEY, true);
+
+    if ($remoteStatus !== 'AUTHORIZED' || $order->has_status(wc_get_is_paid_statuses())) {
+      return;
+    }
+
+    echo '<button type="button" class="button button-primary satispay-capture-payment" data-order-id="' . esc_attr($order->get_id()) . '">'
+      . esc_html__('Capture Satispay payment', 'woo-satispay') . '</button> ';
+    echo '<button type="button" class="button satispay-cancel-payment" data-order-id="' . esc_attr($order->get_id()) . '">'
+      . esc_html__('Cancel Satispay authorization', 'woo-satispay') . '</button>';
+  }
+
+  public function ajax_capture_payment() {
+    check_ajax_referer('satispay-order-action', 'security');
+
+    $orderId = isset($_POST['order_id']) ? absint($_POST['order_id']) : 0;
+    $order = wc_get_order($orderId);
+
+    if (!$order instanceof WC_Order || $order->get_payment_method() !== $this->id || !$this->is_late_capture_order($order)) {
+      wp_send_json_error(array('message' => __('Invalid order.', 'woo-satispay')));
+    }
+
+    try {
+      $payment = Payment::update($order->get_transaction_id(), array(
+        'action' => 'ACCEPT',
+        'amount_unit' => round($order->get_total() * 100)
+      ));
+
+      $this->sync_order_with_payment($order, $payment, 'manual capture');
+      wp_send_json_success(array('message' => __('Payment captured successfully.', 'woo-satispay')));
+    } catch (Exception $e) {
+      $order->add_order_note(sprintf(__('Satispay capture failed: %s', 'woo-satispay'), $e->getMessage()));
+      wp_send_json_error(array('message' => $e->getMessage()));
+    }
+  }
+
+  public function ajax_cancel_payment() {
+    check_ajax_referer('satispay-order-action', 'security');
+
+    $orderId = isset($_POST['order_id']) ? absint($_POST['order_id']) : 0;
+    $order = wc_get_order($orderId);
+
+    if (!$order instanceof WC_Order || $order->get_payment_method() !== $this->id || !$this->is_late_capture_order($order)) {
+      wp_send_json_error(array('message' => __('Invalid order.', 'woo-satispay')));
+    }
+
+    try {
+      $payment = Payment::update($order->get_transaction_id(), array(
+        'action' => 'CANCEL'
+      ));
+
+      $this->sync_order_with_payment($order, $payment, 'manual cancellation');
+      wp_send_json_success(array('message' => __('Authorization cancelled successfully.', 'woo-satispay')));
+    } catch (Exception $e) {
+      $order->add_order_note(sprintf(__('Satispay cancellation failed: %s', 'woo-satispay'), $e->getMessage()));
+      wp_send_json_error(array('message' => $e->getMessage()));
+    }
+  }
+
+  public function enqueue_admin_scripts($hook) {
+    if (!in_array($hook, array('post.php', 'post-new.php', 'woocommerce_page_wc-orders'), true)) {
+      return;
+    }
+
+    $screen = get_current_screen();
+    if (!$screen || !in_array($screen->id, array('shop_order', 'woocommerce_page_wc-orders'), true)) {
+      return;
+    }
+
+    wp_enqueue_script(
+      'satispay-admin-order',
+      plugins_url('/resources/js/admin-order.js', __FILE__),
+      array('jquery'),
+      WC_SATISPAY_VERSION,
+      true
+    );
+
+    wp_localize_script('satispay-admin-order', 'satispay_admin', array(
+      'ajax_url' => admin_url('admin-ajax.php'),
+      'nonce' => wp_create_nonce('satispay-order-action'),
+      'confirm_capture' => __('Are you sure you want to capture this Satispay payment?', 'woo-satispay'),
+      'confirm_cancel' => __('Are you sure you want to cancel this Satispay authorization?', 'woo-satispay'),
+    ));
   }
 
   public function init_form_fields() {
@@ -263,7 +361,7 @@ class WC_Satispay extends WC_Payment_Gateway {
             wp_safe_redirect($this->get_return_url());
             exit;
         }
-        $payment = \SatispayGBusiness\Payment::get($paymentId);
+        $payment = Payment::get($paymentId);
         $order = wc_get_order($payment->metadata->order_id);
         if (in_array($payment->status, array('ACCEPTED', 'AUTHORIZED'), true)) {
           $this->sync_order_with_payment($order, $payment, 'redirect');
@@ -271,7 +369,7 @@ class WC_Satispay extends WC_Payment_Gateway {
           wp_safe_redirect($this->get_return_url($order));
           exit;
         } else {
-          \SatispayGBusiness\Payment::update($payment->id, array(
+          Payment::update($payment->id, array(
             'action' => 'CANCEL'
           ));
 
@@ -281,7 +379,7 @@ class WC_Satispay extends WC_Payment_Gateway {
         }
       case 'callback':
         $paymentId = (string) filter_input(INPUT_GET, 'payment_id', FILTER_SANITIZE_SPECIAL_CHARS);
-        $payment = \SatispayGBusiness\Payment::get($paymentId);
+        $payment = Payment::get($paymentId);
         $order = wc_get_order($payment->metadata->order_id);
 
         if (!$order instanceof WC_Order) {
@@ -304,21 +402,21 @@ class WC_Satispay extends WC_Payment_Gateway {
 
     if (!empty($newActivationCode) && $newActivationCode !== $activationCode) {
       if ($newSandbox) {
-        \SatispayGBusiness\Api::setSandbox(true);
+        Api::setSandbox(true);
       }
 
       try {
-        $authentication = \SatispayGBusiness\Api::authenticateWithToken($newActivationCode);
+        $authentication = Api::authenticateWithToken($newActivationCode);
 
         $this->update_option('keyId', $authentication->keyId);
         $this->update_option('privateKey', $authentication->privateKey);
         $this->update_option('publicKey', $authentication->publicKey);
         $this->update_option('activationCode', $newActivationCode);
 
-        \SatispayGBusiness\Api::setKeyId($authentication->keyId);
-        \SatispayGBusiness\Api::setPrivateKey($authentication->privateKey);
-        \SatispayGBusiness\Api::setPublicKey($authentication->publicKey);
-      } catch(\Exception $ex) {
+        Api::setKeyId($authentication->keyId);
+        Api::setPrivateKey($authentication->privateKey);
+        Api::setPublicKey($authentication->publicKey);
+      } catch(Exception $ex) {
         WC_Admin_Settings::add_error(
           sprintf(__('The Activation Code "%s" is invalid. Please check the code and try again.', 'woo-satispay'), $newActivationCode)
         );
@@ -341,8 +439,8 @@ class WC_Satispay extends WC_Payment_Gateway {
 
     if (!empty($keyId)) {
       try {
-        \SatispayGBusiness\Payment::all();
-      } catch (\Exception $ex) {
+        Payment::all();
+      } catch (Exception $ex) {
         WC_Admin_Settings::add_error(
           sprintf(
             __('Satispay is not correctly configured, get an Activation Code from Online Shop section on %sSatispay Dashboard%s', 'woo-satispay'),
@@ -419,7 +517,7 @@ class WC_Satispay extends WC_Payment_Gateway {
 
     $redirectUrl = add_query_arg(['action' => 'redirect'], $apiUrl);
 
-    $payment = \SatispayGBusiness\Payment::create(array(
+    $payment = Payment::create(array(
       'flow' => $flow,
       'amount_unit' => round($order->get_total() * 100),
       'currency' => $order->get_currency(),
@@ -446,7 +544,7 @@ class WC_Satispay extends WC_Payment_Gateway {
             $this->store_checkout_cart_snapshot($order, $payment->id);
         }
         $order->save();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         if (function_exists('wc_get_logger')) {
             $logger = wc_get_logger();
             $logger->debug(
@@ -857,12 +955,12 @@ class WC_Satispay extends WC_Payment_Gateway {
   private function get_start_date_scheduled_time()
   {
     $maxHours = $this->get_option('finalizeMaxHours');
-    $now = new \DateTime('now', new DateTimeZone('UTC'));
+    $now = new DateTime('now', new DateTimeZone('UTC'));
     $scheduledTimeFrame = $maxHours;
     if (is_null($scheduledTimeFrame) || $scheduledTimeFrame == 0 || $scheduledTimeFrame < 0) {
       $scheduledTimeFrame = 4; // DEFAULT_MAX_HOURS
     }
-    $tosub = new \DateInterval('PT'. $scheduledTimeFrame . 'H');
+    $tosub = new DateInterval('PT'. $scheduledTimeFrame . 'H');
     return strtotime( $now->sub($tosub)->format('Y-m-d H:i:s'));
   }
 
@@ -871,9 +969,9 @@ class WC_Satispay extends WC_Payment_Gateway {
   */
   private function get_end_date_scheduled_time()
   {
-    $now = new \DateTime('now', new DateTimeZone('UTC'));
+    $now = new DateTime('now', new DateTimeZone('UTC'));
     // remove just 1 hour so normal transactions can still be processed
-    $tosub = new \DateInterval('PT'. 1 . 'H');
+    $tosub = new DateInterval('PT'. 1 . 'H');
     return strtotime($now->sub($tosub)->format('Y-m-d H:i:s'));
   }
 
