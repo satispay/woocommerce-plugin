@@ -49,6 +49,7 @@ class WC_Satispay extends WC_Payment_Gateway {
     add_action('woocommerce_update_options_payment_gateways_'.$this->id, array($this, 'process_admin_options'));
     add_action('woocommerce_api_wc_gateway_'.$this->id, array($this, 'gateway_api'));
     add_filter('woocommerce_order_actions', array($this, 'add_order_actions'), 10, 2);
+    add_filter('woocommerce_admin_order_should_render_refunds', array($this, 'should_render_refunds'), 10, 3);
     add_action('woocommerce_order_action_satispay_capture_authorized_payment', array($this, 'capture_authorized_payment'));
     add_action('woocommerce_order_action_satispay_cancel_authorized_payment', array($this, 'cancel_authorized_payment'));
     add_action('woocommerce_order_action_satispay_check_payment_status', array($this, 'check_payment_status'));
@@ -91,6 +92,10 @@ class WC_Satispay extends WC_Payment_Gateway {
   public function process_refund($order_id, $amount = null, $reason = '') {
     $order = wc_get_order($order_id);
 
+    if (!$order instanceof WC_Order || $this->is_authorized_uncaptured_order($order)) {
+      return false;
+    }
+
     try {
       $response = Payment::create(array(
         'flow' => 'REFUND',
@@ -105,6 +110,18 @@ class WC_Satispay extends WC_Payment_Gateway {
     }
 
     return false;
+  }
+
+  public function can_refund_order($order) {
+    return !$this->is_authorized_uncaptured_order($order) && parent::can_refund_order($order);
+  }
+
+  public function should_render_refunds($renderRefunds, $orderId, $order) {
+    if (!$order instanceof WC_Order || $order->get_payment_method() !== $this->id) {
+      return $renderRefunds;
+    }
+
+    return !$this->is_authorized_uncaptured_order($order) && $renderRefunds;
   }
 
   public function finalize_orders() {
@@ -153,13 +170,9 @@ class WC_Satispay extends WC_Payment_Gateway {
       $actions['satispay_check_payment_status'] = __('Check Satispay payment status', 'woo-satispay');
     }
 
-    if ($this->is_late_capture_order($order)) {
-      $remoteStatus = $order->get_meta(self::ORDER_REMOTE_STATUS_META_KEY, true);
-
-      if ($remoteStatus === 'AUTHORIZED' && !$order->has_status(wc_get_is_paid_statuses())) {
-        $actions['satispay_capture_authorized_payment'] = __('Capture authorized Satispay payment', 'woo-satispay');
-        $actions['satispay_cancel_authorized_payment'] = __('Cancel Satispay authorization', 'woo-satispay');
-      }
+    if ($this->is_authorized_uncaptured_order($order)) {
+      $actions['satispay_capture_authorized_payment'] = __('Capture authorized Satispay payment', 'woo-satispay');
+      $actions['satispay_cancel_authorized_payment'] = __('Cancel Satispay authorization', 'woo-satispay');
     }
 
     return $actions;
@@ -219,13 +232,7 @@ class WC_Satispay extends WC_Payment_Gateway {
   }
 
   public function render_late_capture_buttons($order) {
-    if (!$order instanceof WC_Order || $order->get_payment_method() !== $this->id || !$this->is_late_capture_order($order)) {
-      return;
-    }
-
-    $remoteStatus = $order->get_meta(self::ORDER_REMOTE_STATUS_META_KEY, true);
-
-    if ($remoteStatus !== 'AUTHORIZED' || $order->has_status(wc_get_is_paid_statuses())) {
+    if (!$order instanceof WC_Order || $order->get_payment_method() !== $this->id || !$this->is_authorized_uncaptured_order($order)) {
       return;
     }
 
@@ -605,6 +612,12 @@ class WC_Satispay extends WC_Payment_Gateway {
 
   private function is_late_capture_order($order) {
     return $order instanceof WC_Order && $order->get_meta(self::ORDER_FLOW_META_KEY, true) === 'FUND_LOCK';
+  }
+
+  private function is_authorized_uncaptured_order($order) {
+    return $this->is_late_capture_order($order)
+      && $order->get_meta(self::ORDER_REMOTE_STATUS_META_KEY, true) === 'AUTHORIZED'
+      && !$order->has_status(wc_get_is_paid_statuses());
   }
 
   private function sync_order_with_payment($order, $payment, $context = 'sync') {

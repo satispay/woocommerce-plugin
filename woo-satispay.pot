@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Satispay for WooCommerce 2.3.0\n"
+"Project-Id-Version: Satispay for WooCommerce 3.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-satispay\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-21T17:37:38+00:00\n"
+"POT-Creation-Date: 2026-07-16T13:38:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woo-satispay\n"
@@ -33,7 +33,7 @@ msgstr ""
 #: woo-satispay.php
 #: blocks/satispay-badge/render.php:35
 #: includes/blocks/wc-satispay-blocks.php:80
-#: wc-satispay.php:32
+#: wc-satispay.php:36
 #: assets/js/blocks/satispay-badge/index.js:1
 #: assets/js/frontend/blocks.js:1
 #: resources/js/blocks/satispay-badge/index.js:109
@@ -51,185 +51,226 @@ msgid "We accept Satispay"
 msgstr ""
 
 #: includes/blocks/wc-satispay-blocks.php:81
-#: wc-satispay.php:39
+#: wc-satispay.php:43
 msgid "After clicking \"Pay now\", you will be redirected to Satispay to complete your purchase securely"
 msgstr ""
 
 #: includes/blocks/wc-satispay-blocks.php:88
-#: wc-satispay.php:821
+#: wc-satispay.php:946
 #, php-format
 msgid "Satispay is available only for orders in %1$s. Your current order currency is %2$s. Please choose a different payment method to complete your purchase."
 msgstr ""
 
-#: wc-satispay.php:33
+#: wc-satispay.php:37
 msgid "Pay now"
 msgstr ""
 
-#: wc-satispay.php:34
+#: wc-satispay.php:38
 #: assets/js/frontend/blocks.js:1
 #: resources/js/frontend/index.js:11
 msgid "Do it smart. Choose Satispay and pay with a tap!"
 msgstr ""
 
-#: wc-satispay.php:146
+#: wc-satispay.php:153
+msgid "Check Satispay payment status"
+msgstr ""
+
+#: wc-satispay.php:160
 msgid "Capture authorized Satispay payment"
 msgstr ""
 
-#: wc-satispay.php:147
+#: wc-satispay.php:161
+#: wc-satispay.php:235
 msgid "Cancel Satispay authorization"
 msgstr ""
 
-#: wc-satispay.php:166
+#: wc-satispay.php:181
+#: wc-satispay.php:257
 #, php-format
 msgid "Satispay capture failed: %s"
 msgstr ""
 
-#: wc-satispay.php:182
+#: wc-satispay.php:197
+#: wc-satispay.php:280
 #, php-format
 msgid "Satispay cancellation failed: %s"
 msgstr ""
 
-#: wc-satispay.php:189
+#: wc-satispay.php:209
+msgid "Satispay payment check skipped: no transaction ID found."
+msgstr ""
+
+#: wc-satispay.php:217
+#, php-format
+msgid "Satispay payment check failed: %s"
+msgstr ""
+
+#: wc-satispay.php:233
+msgid "Capture Satispay payment"
+msgstr ""
+
+#: wc-satispay.php:245
+#: wc-satispay.php:269
+msgid "Invalid order."
+msgstr ""
+
+#: wc-satispay.php:255
+msgid "Payment captured successfully."
+msgstr ""
+
+#: wc-satispay.php:278
+msgid "Authorization cancelled successfully."
+msgstr ""
+
+#: wc-satispay.php:306
+msgid "Are you sure you want to capture this Satispay payment?"
+msgstr ""
+
+#: wc-satispay.php:307
+msgid "Are you sure you want to cancel this Satispay authorization?"
+msgstr ""
+
+#: wc-satispay.php:314
 msgid "Enable/Disable"
 msgstr ""
 
-#: wc-satispay.php:190
+#: wc-satispay.php:315
 msgid "Enable Satispay"
 msgstr ""
 
-#: wc-satispay.php:195
+#: wc-satispay.php:320
 msgid "Activation Code"
 msgstr ""
 
-#: wc-satispay.php:197
+#: wc-satispay.php:322
 #, php-format
 msgid "Get a six characters Activation Code from Online Shop section on <a href=\"%s\" target=\"_blank\">Satispay Dashboard</a>."
 msgstr ""
 
-#: wc-satispay.php:200
+#: wc-satispay.php:325
 msgid "Sandbox"
 msgstr ""
 
-#: wc-satispay.php:201
+#: wc-satispay.php:326
 msgid "Sandbox Mode"
 msgstr ""
 
-#: wc-satispay.php:204
+#: wc-satispay.php:329
 #, php-format
 msgid "Sandbox Mode can be used to test payments. Request a <a href=\"%s\" target=\"_blank\">Sandbox Account</a>."
 msgstr ""
 
-#: wc-satispay.php:207
+#: wc-satispay.php:332
 msgid "Late capture"
 msgstr ""
 
-#: wc-satispay.php:208
+#: wc-satispay.php:333
 msgid "Enable late capture"
 msgstr ""
 
-#: wc-satispay.php:211
-msgid "When enabled, new Satispay payments will use the late capture flow."
+#: wc-satispay.php:336
+msgid "Authorize payments at checkout and capture the funds later"
 msgstr ""
 
-#: wc-satispay.php:214
+#: wc-satispay.php:339
 msgid "Finalize unhandled payments"
 msgstr ""
 
-#: wc-satispay.php:215
+#: wc-satispay.php:340
 msgid "Enable cron"
 msgstr ""
 
-#: wc-satispay.php:218
+#: wc-satispay.php:343
 msgid "Finalize unhandled Satispay payments with a cron."
 msgstr ""
 
-#: wc-satispay.php:221
-#: wc-satispay.php:222
+#: wc-satispay.php:346
+#: wc-satispay.php:347
 msgid "Finalize pending payments up to"
 msgstr ""
 
-#: wc-satispay.php:225
+#: wc-satispay.php:350
 msgid "Choose a number of hours, default is four and minimum is two."
 msgstr ""
 
-#: wc-satispay.php:296
+#: wc-satispay.php:421
 #, php-format
 msgid "The Activation Code \"%s\" is invalid. Please check the code and try again."
 msgstr ""
 
-#: wc-satispay.php:321
+#: wc-satispay.php:446
 #, php-format
 msgid "Satispay is not correctly configured, get an Activation Code from Online Shop section on %sSatispay Dashboard%s"
 msgstr ""
 
-#: wc-satispay.php:468
-#: wc-satispay.php:674
+#: wc-satispay.php:593
+#: wc-satispay.php:799
 msgid "Satispay payment details"
 msgstr ""
 
-#: wc-satispay.php:471
+#: wc-satispay.php:596
 msgid "Payment solution"
 msgstr ""
 
-#: wc-satispay.php:475
+#: wc-satispay.php:600
 msgid "Fringe benefits used"
 msgstr ""
 
-#: wc-satispay.php:511
+#: wc-satispay.php:636
 #, php-format
 msgid "Satispay payment authorized and waiting for capture (%s)."
 msgstr ""
 
-#: wc-satispay.php:521
+#: wc-satispay.php:646
 #, php-format
 msgid "Satispay payment captured for %1$s (%2$s)."
 msgstr ""
 
-#: wc-satispay.php:522
+#: wc-satispay.php:647
 #, php-format
 msgid "Satispay payment captured (%s)."
 msgstr ""
 
-#: wc-satispay.php:530
+#: wc-satispay.php:655
 #, php-format
 msgid "Satispay payment canceled (%s)."
 msgstr ""
 
-#: wc-satispay.php:558
+#: wc-satispay.php:683
 #, php-format
 msgid "Satispay special payment details detected: %1$s (%2$s)."
 msgstr ""
 
-#: wc-satispay.php:565
+#: wc-satispay.php:690
 #, php-format
 msgid "Satispay special payment details detected: %1$s. Fringe benefits used: %2$s (%3$s)."
 msgstr ""
 
-#: wc-satispay.php:606
+#: wc-satispay.php:731
 msgid "Satispay BNPL + fringe benefits"
 msgstr ""
 
-#: wc-satispay.php:610
+#: wc-satispay.php:735
 msgid "Satispay fringe benefits"
 msgstr ""
 
-#: wc-satispay.php:614
+#: wc-satispay.php:739
 msgid "Satispay BNPL"
 msgstr ""
 
-#: wc-satispay.php:679
+#: wc-satispay.php:804
 msgid "Payment solution:"
 msgstr ""
 
-#: wc-satispay.php:686
+#: wc-satispay.php:811
 msgid "Fringe benefits used:"
 msgstr ""
 
-#: woo-satispay.php:93
+#: woo-satispay.php:99
 msgid "Settings"
 msgstr ""
 
-#: woo-satispay.php:110
+#: woo-satispay.php:116
 msgid "Every 4 hours"
 msgstr ""
 
