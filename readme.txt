@@ -3,9 +3,9 @@ Contributors: Satispay
 Tags: woocommerce, satispay, payment method
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 2.2.9
-License: MIT
-License URI: https://opensource.org/licenses/MIT
+Stable tag: 3.0.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart
 
@@ -45,6 +45,37 @@ You can view Satispay's terms of service and privacy policy here:
 * Privacy Policy: https://www.satispay.com/en-it/legal-hub/privacy-policy/
 
 == Changelog ==
+= 3.0.0 =
+* Added compatibility with WooCommerce 10.6.1
+* Updated deprecated functions and properties (WC_Order, WC_Cart, etc.)
+* Fixed hook registration for available payment gateways
+* Improved security with wp_safe_redirect
+* Defined WC_SATISPAY_VERSION constant for better version management
+* Updated license to GPLv2 or later for Marketplace compliance
+* Implemented Store API security hardening for guest checkout
+* Added visible EUR-only warnings in checkout and Blocks, plus authoritative server-side validation, without hiding Satispay
+* Added input sanitization for all S2S callback parameters
+* Removed direct usage of $_GET for improved security and WordPress compliance
+* Added a dedicated late capture gateway setting
+* Added clickable Satispay transaction links in WooCommerce orders
+* Added staging/live dashboard transaction URL support for new Satispay orders
+* Persisted the Satispay order environment to keep transaction links stable across configuration changes
+* Fixed the sandbox account URL in gateway settings
+* Detected and stored Satispay BNPL payments from payment API callbacks
+* Detected and stored Satispay fringe benefits payments, including the fringe amount used
+* Displayed Satispay BNPL and fringe benefits details in WooCommerce order pages and admin orders
+* Added "Satispay Payment Methods" Gutenberg block for displaying Satispay logo and label in block-based areas (footers, pages)
+* Restored cart contents when customer cancels payment on Satispay redirect (classic and block checkout)
+* Cleared cart snapshot session data after successful payment
+* Fixed admin error notices using WC_Admin_Settings::add_error() instead of raw echo
+* Prevented invalid activation code from being saved on authentication failure
+* Fixed PHP warning on missing checkbox POST data in process_admin_options
+* Skipped unnecessary API call in admin_options when no credentials are configured
+* Separated admin method_description from customer-facing checkout description
+* Declared cart_checkout_blocks feature compatibility
+* Added "Check Satispay payment status" order action for manual payment sync from admin
+* Added capture and cancel buttons in the order items area for late capture authorized payments
+
 = 2.2.9 =
 * Updated compatibility to WP-6.9
 

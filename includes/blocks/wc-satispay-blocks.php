@@ -1,7 +1,5 @@
 <?php
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
-use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
-use Automattic\WooCommerce\Blocks\Payments\PaymentContext;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -50,7 +48,7 @@ final class WC_Satispay_Blocks extends AbstractPaymentMethodType {
             ? require( $script_asset_path )
             : array(
                 'dependencies' => array(),
-                'version'      => '1.2.0'
+                'version'      => WC_SATISPAY_VERSION
             );
         $script_url        = WC_Satispay::plugin_url() . $script_path;
 
@@ -63,7 +61,7 @@ final class WC_Satispay_Blocks extends AbstractPaymentMethodType {
         );
 
         if ( function_exists( 'wp_set_script_translations' ) ) {
-            wp_set_script_translations( 'wc-satispay-payments-blocks', 'woo-satispay', WC_Satispay::plugin_abspath());
+            wp_set_script_translations( 'wc-satispay-payments-blocks', 'woo-satispay', WC_Satispay::plugin_abspath() . 'languages');
         }
 
         return [ 'wc-satispay-payments-blocks' ];
@@ -75,11 +73,22 @@ final class WC_Satispay_Blocks extends AbstractPaymentMethodType {
      * @return array
      */
     public function get_payment_method_data() {
+        $currency = strtoupper( (string) get_woocommerce_currency() );
+        $is_supported_currency = WC_Satispay::SUPPORTED_CURRENCY === $currency;
+
         return [
             'title'       => __('Satispay', 'woo-satispay'),
-            'description' => __('Do it smart. Choose Satispay and pay with a tap!', 'woo-satispay'),
+            'description' => __('After clicking "Pay now", you will be redirected to Satispay to complete your purchase securely', 'woo-satispay'),
             'icon' => WC_Satispay::plugin_url() . '/logo.svg',
-            'supports'    => WC_Satispay::SUPPORTS
+            'supports'    => WC_Satispay::SUPPORTS,
+            'currency' => $currency,
+            'supportedCurrency' => WC_Satispay::SUPPORTED_CURRENCY,
+            'isSupportedCurrency' => $is_supported_currency,
+            'unsupportedCurrencyMessage' => sprintf(
+                __('Satispay is available only for orders in %1$s. Your current order currency is %2$s. Please choose a different payment method to complete your purchase.', 'woo-satispay'),
+                WC_Satispay::SUPPORTED_CURRENCY,
+                $currency
+            ),
         ];
     }
 }

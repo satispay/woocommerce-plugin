@@ -5,12 +5,12 @@
  * Description: Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart
  * Author: Satispay
  * Author URI: https://www.satispay.com/
- * License: MIT
- * License URI: https://opensource.org/licenses/MIT
- * Version: 2.2.9
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Version: 3.0.0
  * Requires at least: 5.0
  * Requires Plugins: woocommerce
- * WC tested up to: 8.9
+ * WC tested up to: 10.6
  */
 
 // Exit if accessed directly.
@@ -18,13 +18,55 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+define( 'WC_SATISPAY_VERSION', '2.3.0' );
+define( 'WC_SATISPAY_MAIN_FILE', __FILE__ );
+
+add_action( 'init', 'wc_satispay_register_blocks' );
+function wc_satispay_register_blocks() {
+    $block_dir   = plugin_dir_path( __FILE__ ) . 'blocks/satispay-badge';
+    $asset_file  = plugin_dir_path( __FILE__ ) . 'assets/js/blocks/satispay-badge/index.asset.php';
+
+    if ( ! file_exists( $asset_file ) ) {
+        return;
+    }
+
+    $asset = require $asset_file;
+
+    wp_register_script(
+        'woo-satispay-payment-badge-editor',
+        plugins_url( 'assets/js/blocks/satispay-badge/index.js', __FILE__ ),
+        $asset['dependencies'],
+        $asset['version'],
+        true
+    );
+
+//    if ( function_exists( 'wp_set_script_translations' ) ) {
+//        wp_set_script_translations( 'woo-satispay-payment-badge-editor', 'woo-satispay', plugin_dir_path( __FILE__ ) . 'languages' );
+//    }
+
+    wp_add_inline_script(
+        'woo-satispay-payment-badge-editor',
+        'window.wooSatispayBadge = ' . wp_json_encode( [ 'logoUrl' => plugins_url( 'logo.svg', __FILE__ ) ] ) . ';',
+        'before'
+    );
+
+    register_block_type( $block_dir );
+}
+
 add_action( 'before_woocommerce_init', function() {
     if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
         \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
     }
 } );
 add_action('plugins_loaded', 'wc_satispay_init', 0);
+//add_action('plugins_loaded', 'wc_satispay_load_textdomain');
 add_filter('cron_schedules', 'wc_satispay_cron_schedule');
+
+//function wc_satispay_load_textdomain() {
+//    load_plugin_textdomain('woo-satispay', false, dirname(plugin_basename(__FILE__)) . '/languages');
+//}
+
 function wc_satispay_init() {
 	if (!class_exists('WC_Payment_Gateway')) return;
 

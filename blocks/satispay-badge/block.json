@@ -1,0 +1,58 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "woo-satispay/payment-badge",
+  "title": "Satispay Payment Methods",
+  "category": "woocommerce",
+  "description": "Display Satispay as an accepted payment method, with logo and optional label.",
+  "keywords": [ "satispay", "payment", "badge", "logo", "accepted" ],
+  "textdomain": "woo-satispay",
+  "editorScript": "woo-satispay-payment-badge-editor",
+  "render": "file:./render.php",
+  "example": {
+    "attributes": {
+      "label": "We accept Satispay",
+      "showLabel": true,
+      "inlineContent": false,
+      "textAlign": "left",
+      "logoWidth": 60
+    }
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "default": "We accept Satispay"
+    },
+    "showLabel": {
+      "type": "boolean",
+      "default": true
+    },
+    "inlineContent": {
+      "type": "boolean",
+      "default": false
+    },
+    "textAlign": {
+      "type": "string",
+      "default": "left"
+    },
+    "logoWidth": {
+      "type": "number",
+      "default": 60
+    }
+  },
+  "supports": {
+    "html": false,
+    "color": {
+      "background": true,
+      "text": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true
+    }
+  }
+}
+
