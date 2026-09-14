@@ -2,15 +2,15 @@
 /*
  * Plugin Name: Satispay for WooCommerce
  * Plugin URI: https://wordpress.org/plugins/woo-satispay/
- * Description: Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart
+ * Description: People Paying People
  * Author: Satispay
  * Author URI: https://www.satispay.com/
  * License: MIT
  * License URI: https://opensource.org/licenses/MIT
- * Version: 2.2.9
+ * Version: 2.2.10
  * Requires at least: 5.0
  * Requires Plugins: woocommerce
- * WC tested up to: 8.9
+ * WC tested up to: 11.1
  */
 
 // Exit if accessed directly.

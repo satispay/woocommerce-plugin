@@ -19,7 +19,7 @@ class WC_Satispay extends WC_Payment_Gateway {
     $this->id                   = 'satispay';
     $this->method_title         = __('Satispay', 'woo-satispay');
     $this->order_button_text    = __('Pay with Satispay', 'woo-satispay');
-    $this->method_description   = __('Do it smart. Choose Satispay and pay with a tap!', 'woo-satispay');
+    $this->method_description   = __('People Paying People.', 'woo-satispay');
     $this->has_fields           = false;
     $this->supports             = self::SUPPORTS;
 
@@ -126,7 +126,7 @@ class WC_Satispay extends WC_Payment_Gateway {
         'label' => __('Sandbox Mode', 'woo-satispay'),
         'type' => 'checkbox',
         'default' => 'no',
-        'description' => wp_kses_post(sprintf(__('Sandbox Mode can be used to test payments. Request a <a href="%s" target="_blank">Sandbox Account</a>.', 'woo-satispay'), 'https://developers.satispay.com/docs/sandbox-account'))
+        'description' => wp_kses_post(sprintf(__('Sandbox Mode can be used to test payments. Request a <a href="%s" target="_blank">Sandbox Account</a>.', 'woo-satispay'), 'https://developers.satispay.com/docs/credentials#sandbox-account'))
       ),
       'finalizeUnhandledTransactions' => array(
         'title' => __('Finalize unhandled payments', 'woo-satispay'),

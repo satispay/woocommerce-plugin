@@ -8,7 +8,7 @@ const settings = getSetting( 'satispay_data', {} );
 
 const defaultLabel = __('Satispay', 'woo-satispay');
 
-const defaultDescription = __('Do it smart. Choose Satispay and pay with a tap!','woo-satispay');
+const defaultDescription = __('People Paying People.','woo-satispay');
 
 const iconUrl = settings.icon;
 

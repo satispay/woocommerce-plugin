@@ -2,12 +2,12 @@
 Contributors: Satispay
 Tags: woocommerce, satispay, payment method
 Requires at least: 5.0
-Tested up to: 6.9
-Stable tag: 2.2.9
+Tested up to: 7.1
+Stable tag: 2.2.10
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Save time and money by accepting payments from your customers with Satispay. Free, simple, secure! #doitsmart
+People Paying People
 
 == Description ==
 
@@ -45,6 +45,10 @@ You can view Satispay's terms of service and privacy policy here:
 * Privacy Policy: https://www.satispay.com/en-it/legal-hub/privacy-policy/
 
 == Changelog ==
+= 2.2.10 =
+* Fixed Sandbox Account documentation link
+* Updated compatibility to WP-7.1 and WC-11.1
+
 = 2.2.9 =
 * Updated compatibility to WP-6.9
 
