@@ -4,6 +4,7 @@ rm -rf tmp-svn
 svn co https://plugins.svn.wordpress.org/woo-satispay tmp-svn
 (cd tmp-svn/trunk && rm -rf *)
 cp LICENSE tmp-svn/trunk
+cp README.md tmp-svn/trunk
 cp readme.txt tmp-svn/trunk
 cp logo.svg tmp-svn/trunk
 cp wc-satispay.php tmp-svn/trunk

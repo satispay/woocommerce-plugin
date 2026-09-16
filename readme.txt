@@ -48,6 +48,7 @@ You can view Satispay's terms of service and privacy policy here:
 = 2.2.10 =
 * Fixed Sandbox Account documentation link
 * Updated compatibility to WP-7.1 and WC-11.1
+* Updated plugin tagline to "People Paying People"
 
 = 2.2.9 =
 * Updated compatibility to WP-6.9
